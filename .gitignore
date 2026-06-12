@@ -1,0 +1,11 @@
+﻿node_modules/
+dist/
+.npm-cache/
+chromedata/
+chromedata2/
+chromedata3/
+*.log
+*.err
+backend/uploads/*
+!backend/uploads/.gitkeep
+.env

@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JPENG | 视觉 & AI 设计师</title>
+  <script>
+    (function() {
+      var t = localStorage.getItem("jpeng-theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      else document.documentElement.setAttribute("data-theme", "dark");
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#0a0a0a; color:#f5f5f5; font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif; }
+    #root { min-height:100vh; }
+    .init-load { display:flex; align-items:center; justify-content:center; height:100vh; flex-direction:column; gap:24px; }
+    .init-logo { font-family:Sora,sans-serif; font-size:2.5rem; font-weight:700; letter-spacing:6px; color:#C0FE27; }
+    .init-sub { color:#666; font-size:0.85rem; letter-spacing:2px; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="init-load">
+      <div class="init-logo">JPENG</div>
+      <div class="init-sub">Loading...</div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

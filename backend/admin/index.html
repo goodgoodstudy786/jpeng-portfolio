@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JPENG 缂冩垹鐝粻锛勬倞閸氬骸褰?/title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0a0a0a;
+  color: #f5f5f5;
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 220px;
+  background: #111;
+  padding: 30px 0;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar h2 {
+  font-size: 1.1rem;
+  padding: 0 24px 24px;
+  color: #C0FE27;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+.sidebar a {
+  display: block;
+  padding: 12px 24px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  border-left: 2px solid transparent;
+}
+.sidebar a:hover, .sidebar a.active {
+  color: #fff;
+  background: rgba(192,254,39,0.06);
+  border-left-color: #C0FE27;
+}
+.main {
+  flex: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+  max-width: 1200px;
+}
+.main h1 {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  color: #C0FE27;
+  letter-spacing: 1px;
+}
+.section { display: none; }
+.section.active { display: block; }
+
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+input, textarea, select {
+  width: 100%;
+  padding: 10px 14px;
+  background: #181818;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  color: #f5f5f5;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+input:focus, textarea:focus { outline: none; border-color: #C0FE27; }
+textarea { min-height: 80px; resize: vertical; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.btn {
+  padding: 10px 24px;
+  background: #C0FE27;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn:hover { background: #9ddb10; transform: translateY(-1px); }
+.btn-sm { padding: 6px 14px; font-size: 0.78rem; }
+.btn-danger { background: #ff4757; color: #fff; }
+.btn-danger:hover { background: #e04050; }
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.7);
+}
+.btn-outline:hover { border-color: #C0FE27; color: #C0FE27; background: rgba(192,254,39,0.06); }
+
+.card-list { display: flex; flex-direction: column; gap: 12px; }
+.card-item {
+  background: #181818;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-item .info { flex: 1; }
+.card-item .info h4 { font-size: 0.95rem; margin-bottom: 4px; }
+.card-item .info p { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+.card-item .actions { display: flex; gap: 8px; }
+
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal.open { display: flex; }
+.modal-content {
+  background: #181818;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 30px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal-content h3 { margin-bottom: 20px; color: #C0FE27; }
+.modal-actions { display: flex; gap: 12px; margin-top: 20px; justify-content: flex-end; }
+
+.tag-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(192,254,39,0.1);
+  border: 1px solid rgba(192,254,39,0.2);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  color: #C0FE27;
+}
+.tag button {
+  background: none; border: none;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer; font-size: 0.8rem; padding: 0;
+}
+.tag button:hover { color: #ff4757; }
+
+.section-group {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.section-group h4 { font-size: 0.82rem; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #C0FE27;
+  color: #000;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 2000;
+}
+.toast.show { opacity: 1; }
+
+@media (max-width: 700px) {
+  body { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: static; padding: 20px 0; }
+  .sidebar a { padding: 10px 20px; }
+  .main { padding: 20px; }
+  .row { grid-template-columns: 1fr; }
+}
+
+/* 閳光偓閳光偓 Login 閳光偓閳光偓 */
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.login-overlay.hidden { display: none; }
+.login-box {
+  width: 360px;
+  padding: 40px;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  text-align: center;
+}
+.login-box h1 {
+  font-size: 1.5rem;
+  color: #C0FE27;
+  margin-bottom: 6px;
+  letter-spacing: 2px;
+}
+.login-box p {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 28px;
+  letter-spacing: 1px;
+}
+.login-box .form-group { text-align: left; }
+.login-box input { text-align: left; }
+.login-error {
+  color: #ff4757;
+  font-size: 0.78rem;
+  margin-top: 10px;
+  display: none;
+}
+.login-error.show { display: block; }
+.login-box .btn { width: 100%; padding: 12px; margin-top: 8px; font-size: 0.9rem; }</style>
+</head>
+<body>
+
+<div class="login-overlay" id="loginOverlay"><div class="login-box"><h1>JPENG CMS</h1><p>锟斤拷站锟斤拷锟斤拷锟教?/p><div class="form-group"><label>锟矫伙拷锟斤拷</label><input id="login-user" placeholder="锟斤拷锟斤拷锟斤拷锟矫伙拷锟斤拷" /></div><div class="form-group"><label>锟斤拷锟斤拷</label><input id="login-pass" type="password" placeholder="锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷" onkeydown="if(event.key===String.fromCharCode(69,110,116,101,114))doLogin()" /></div><div class="login-error" id="loginError">锟矫伙拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟?/div><button class="btn" onclick="doLogin()">锟斤拷 录</button></div></div>
+<nav class="sidebar">
+  <h2>JPENG 璺?CMS</h2>
+  <a href="#" class="active" data-section="site">缂冩垹鐝拋鍓х枂</a>
+  <a href="#" data-section="nav">鐎佃壈鍩呴懣婊冨礋</a>
+  <a href="#" data-section="hero">Banner 鐠佸墽鐤?/a>
+  <a href="#" data-section="projects">娴ｆ粌鎼х粻锛勬倞</a>
+  <a href="#" data-section="strengths">娑擃亙姹夋导妯哄◢</a>
+  <a href="#" data-section="inspirations">閻忓灚鍔呴弨鎯版</a>
+  <a href="#" data-section="contact">閼辨梻閮撮弬鐟扮础</a>
+</nav>
+
+<div class="main" id="app">
+  <h1 id="section-title">缂冩垹鐝拋鍓х枂</h1>
+  <div id="content"></div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content" id="modal-content"></div>
+</div>
+
+<div class="toast" id="toast">瀹歌弓绻氱€?/div>
+
+<script>
+const API = ""
+let data = {}
+let token = localStorage.getItem("jpeng-cms-token") || ""
+
+// 閳光偓閳光偓 Auth 閳光偓閳光偓
+function setToken(t) { token = t; localStorage.setItem("jpeng-cms-token", t) }
+function clearToken() { token = ""; localStorage.removeItem("jpeng-cms-token") }
+
+async function checkAuth() {
+  if (!token) { document.getElementById("loginOverlay").classList.remove("hidden"); return false }
+  try {
+    const res = await fetchAPI("/api/check-auth")
+    if (res.authenticated) { document.getElementById("loginOverlay").classList.add("hidden"); return true }
+  } catch(e) {}
+  document.getElementById("loginOverlay").classList.remove("hidden")
+  return false
+}
+
+async function doLogin() {
+  const username = document.getElementById("login-user").value
+  const password = document.getElementById("login-pass").value
+  document.getElementById("loginError").classList.remove("show")
+  try {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    })
+    if (!res.ok) { document.getElementById("loginError").classList.add("show"); return }
+    const data = await res.json()
+    setToken(data.token)
+    document.getElementById("loginOverlay").classList.add("hidden")
+    await loadData()
+    renderSite()
+  } catch(e) { document.getElementById("loginError").classList.add("show") }
+}
+
+function doLogout() {
+  clearToken()
+  document.getElementById("loginOverlay").classList.remove("hidden")
+}
+
+// 閳光偓閳光偓 Utils 閳光偓閳光偓
+function toast(msg) {
+  const el = document.getElementById("toast")
+  el.textContent = msg
+  el.classList.add("show")
+  setTimeout(() => el.classList.remove("show"), 2000)
+}
+
+async function fetchAPI(url, opts = {}) {
+  const headers = { "Content-Type": "application/json", ...opts.headers }
+  if (token) headers["Authorization"] = "Bearer " + token
+  const res = await fetch(API + url, { headers, ...opts })
+  if (!res.ok) throw new Error(await res.text())
+  return res.json()
+}
+
+async function loadData() {
+  data = await fetchAPI("/api/data")
+}
+
+function openModal(html) {
+  document.getElementById("modal-content").innerHTML = html
+  document.getElementById("modal").classList.add("open")
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.remove("open")
+}
+
+document.getElementById("modal").addEventListener("click", (e) => {
+  if (e.target === e.currentTarget) closeModal()
+})
+
+const sections = {
+  site: renderSite,
+  nav: renderNav,
+  hero: renderHero,
+  projects: renderProjects,
+  strengths: renderStrengths,
+  inspirations: renderInspirations,
+  contact: renderContact,
+}
+
+function renderSite() {
+  document.getElementById("section-title").textContent = "缂冩垹鐝拋鍓х枂"
+  document.getElementById("content").innerHTML = `
+    <div class="row">
+      <div class="form-group"><label>Logo 閺傚洤鐡?/label><input id="site-logo" value="${data.site.logo}" /></div>
+      <div class="form-group"><label>鎼存洟鍎撮悧鍫熸綀閺傚洤鐡?/label><input id="site-footer" value="${data.site.footer}" /></div>
+    </div>
+    <button class="btn" onclick="saveSite()">娣囨繂鐡ㄧ拋鍓х枂</button>
+    <button class="btn btn-danger" style="margin-left:10px" onclick="doLogout()">闁偓閸戣櫣娅ヨぐ?/button>
+  `
+}
+
+async function saveSite() {
+  await fetchAPI("/api/site", { method: "PUT", body: JSON.stringify({ logo: document.getElementById("site-logo").value, footer: document.getElementById("site-footer").value }) })
+  toast("缂冩垹鐝拋鍓х枂瀹歌弓绻氱€?)
+}
+
+function renderNav() {
+  document.getElementById("section-title").textContent = "鐎佃壈鍩呴懣婊冨礋"
+  let html = '<div class="card-list">'
+  data.nav.forEach((item, i) => {
+    html += `<div class="card-item"><div class="info"><h4>${item.label}</h4><p>${item.href}</p></div><div class="actions"><button class="btn btn-sm btn-outline" onclick="editNav(${i})">缂傛牞绶?/button></div></div>`
+  })
+  html += '</div>'
+  html += `<button class="btn" style="margin-top:12px" onclick="addNav()">+ 濞ｈ濮炵€佃壈鍩?/button>
+           <button class="btn" style="margin-top:12px;margin-left:10px" onclick="saveNavData()">娣囨繂鐡ㄧ€佃壈鍩?/button>`
+  document.getElementById("content").innerHTML = html
+}
+
+function editNav(i) {
+  const item = data.nav[i]
+  openModal(`
+    <h3>缂傛牞绶€佃壈鍩?/h3>
+    <div class="form-group"><label>閸氬秶袨</label><input id="edit-nav-label" value="${item.label}" /></div>
+    <div class="form-group"><label>闁剧偓甯?/label><input id="edit-nav-href" value="${item.href}" /></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">閸欐牗绉?/button>
+      <button class="btn" onclick="saveNav(${i})">娣囨繂鐡?/button>
+    </div>
+  `)
+}
+
+function saveNav(i) {
+  data.nav[i] = {
+    label: document.getElementById("edit-nav-label").value,
+    href: document.getElementById("edit-nav-href").value,
+  }
+  closeModal()
+  renderNav()
+}
+
+function addNav() {
+  data.nav.push({ label: "閺傛媽褰嶉崡?, href: "/#new" })
+  renderNav()
+}
+
+async function saveNavData() {
+  await fetchAPI("/api/nav", { method: "PUT", body: JSON.stringify(data.nav) })
+  toast("鐎佃壈鍩呭韫箽鐎?)
+}
+
+function renderHero() {
+  document.getElementById("section-title").textContent = "Banner 鐠佸墽鐤?
+  const h = data.hero
+  document.getElementById("content").innerHTML = `
+    <div class="row">
+      <div class="form-group"><label>閺嶅洩顕㈤敍鍫ｅ閺傚浄绱?/label><input id="hero-tagline" value="${h.tagline}" /></div>
+      <div class="form-group"><label>閸擃垱鐖ｆ０姗堢礄娑擃厽鏋冮敍?/label><input id="hero-subtitle" value="${h.subtitle}" /></div>
+    </div>
+    <div class="row">
+      <div class="form-group"><label>娑撶粯瀵滈柦顔芥瀮鐎?/label><input id="hero-btn-primary" value="${h.btnPrimary}" /></div>
+      <div class="form-group"><label>濞嗏剝瀵滈柦顔芥瀮鐎?/label><input id="hero-btn-secondary" value="${h.btnSecondary}" /></div>
+    </div>
+    <div class="row">
+      <div class="form-group"><label>閸╁骸绔堕敍鍦攁sed in閿?/label><input id="hero-basedin" value="${h.basedIn}" /></div>
+    </div>
+    <button class="btn" onclick="saveHero()">娣囨繂鐡ㄧ拋鍓х枂</button>
+  `
+}
+
+async function saveHero() {
+  await fetchAPI("/api/hero", {
+    method: "PUT",
+    body: JSON.stringify({
+      tagline: document.getElementById("hero-tagline").value,
+      subtitle: document.getElementById("hero-subtitle").value,
+      btnPrimary: document.getElementById("hero-btn-primary").value,
+      btnSecondary: document.getElementById("hero-btn-secondary").value,
+      basedIn: document.getElementById("hero-basedin").value,
+    }),
+  })
+  toast("Banner 瀹歌弓绻氱€?)
+}
+
+function renderProjects() {
+  document.getElementById("section-title").textContent = "缁箖鈧缍旈崫?
+  let html = '<div class="card-list">'
+  data.projects.forEach((p, i) => {
+    html += `<div class="card-item"><div class="info"><h4>${p.title}</h4><p>${p.subtitle || ""} 璺?${(p.tags || []).join(", ")}</p></div><div class="actions"><button class="btn btn-sm btn-outline" onclick="editProject('${p.id}')">缂傛牞绶?/button><button class="btn btn-sm btn-danger" onclick="deleteProject('${p.id}')">閸掔娀娅?/button></div></div>`
+  })
+  html += '</div><button class="btn" style="margin-top:16px" onclick="addProject()">+ 濞ｈ濮炴担婊冩惂</button>'
+  document.getElementById("content").innerHTML = html
+}
+
+function editProject(id) {
+  const p = data.projects.find((x) => x.id === id)
+  if (!p) return
+  openModal(`
+    <h3>缂傛牞绶担婊冩惂</h3>
+    <div class="row">
+      <div class="form-group"><label>閺嶅洭顣?/label><input id="ep-title" value="${p.title}" /></div>
+      <div class="form-group"><label>閼昏鲸鏋冮崜顖涚垼妫?/label><input id="ep-subtitle" value="${p.subtitle || ""}" /></div>
+    </div>
+    <div class="row">
+      <div class="form-group"><label>楠炵繝鍞?/label><input id="ep-year" value="${p.year || ""}" /></div>
+      <div class="form-group"><label>鐟欐帟澹?/label><input id="ep-role" value="${p.role || ""}" /></div>
+    </div>
+    <div class="form-group"><label>閺嶅洨顒烽敍鍫モ偓妤€褰块崚鍡涙閿?/label><input id="ep-tags" value="${(p.tags || []).join(", ")}" /></div>
+    <div class="form-group"><label>濮掑倽鍫?/label><textarea id="ep-overview">${p.overview || ""}</textarea></div>
+    <div class="form-group"><label>缁旂姾濡敍鍦漇ON閺嶇厧绱￠敍?/label><textarea id="ep-sections" style="min-height:100px">${JSON.stringify(p.sections || [], null, 2)}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">閸欐牗绉?/button>
+      <button class="btn" onclick="saveProject('${id}')">娣囨繂鐡?/button>
+    </div>
+  `)
+}
+
+async function saveProject(id) {
+  const idx = data.projects.findIndex((x) => x.id === id)
+  if (idx === -1) return
+  let sections = []
+  try { sections = JSON.parse(document.getElementById("ep-sections").value) } catch(e) {}
+  data.projects[idx] = {
+    ...data.projects[idx],
+    title: document.getElementById("ep-title").value,
+    subtitle: document.getElementById("ep-subtitle").value,
+    year: document.getElementById("ep-year").value,
+    role: document.getElementById("ep-role").value,
+    tags: document.getElementById("ep-tags").value.split(",").map((t) => t.trim()).filter(Boolean),
+    overview: document.getElementById("ep-overview").value,
+    sections,
+  }
+  await fetchAPI("/api/projects/" + id, { method: "PUT", body: JSON.stringify(data.projects[idx]) })
+  closeModal()
+  renderProjects()
+  toast("瀹稿弶娲块弬?)
+}
+
+async function deleteProject(id) {
+  if (!confirm("绾喖鐣鹃崚鐘绘珟閿?)) return
+  await fetchAPI("/api/projects/" + id, { method: "DELETE" })
+  data.projects = data.projects.filter((p) => p.id !== id)
+  renderProjects()
+  toast("瀹告彃鍨归梽?)
+}
+
+function addProject() {
+  const id = crypto.randomUUID()
+  data.projects.push({ id, title: "閺傞缍旈崫?, subtitle: "New Project", year: "2026", tags: [], sections: [] })
+  renderProjects()
+}
+
+function renderStrengths() {
+  document.getElementById("section-title").textContent = "娑擃亙姹夋导妯哄◢"
+  let html = '<div class="card-list">'
+  data.strengths.forEach((s, i) => {
+    html += `<div class="card-item"><div class="info"><h4>${s.title}</h4><p>${s.titleCN} 璺?${s.desc}</p></div><div class="actions"><button class="btn btn-sm btn-outline" onclick="editStrength('${s.id}')">缂傛牞绶?/button><button class="btn btn-sm btn-danger" onclick="deleteStrength('${s.id}')">閸掔娀娅?/button></div></div>`
+  })
+  html += '</div><button class="btn" style="margin-top:16px" onclick="addStrength()">+ 濞ｈ濮炴导妯哄◢</button>'
+  document.getElementById("content").innerHTML = html
+}
+
+function editStrength(id) {
+  const s = data.strengths.find((x) => x.id === id)
+  if (!s) return
+  openModal(`
+    <h3>缂傛牞绶导妯哄◢</h3>
+    <div class="row">
+      <div class="form-group"><label>缂傛牕褰?/label><input id="es-num" value="${s.num}" /></div>
+      <div class="form-group"><label>閼昏鲸鏋冮弽鍥暯</label><input id="es-title" value="${s.title}" /></div>
+    </div>
+    <div class="row">
+      <div class="form-group"><label>娑擃厽鏋冮弽鍥暯</label><input id="es-titlecn" value="${s.titleCN}" /></div>
+      <div class="form-group"><label>閺嶅洨顒烽敍鍫モ偓妤€褰块崚鍡涙閿?/label><input id="es-tags" value="${(s.tags || []).join(", ")}" /></div>
+    </div>
+    <div class="form-group"><label>閹诲繗鍫?/label><textarea id="es-desc">${s.desc}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">閸欐牗绉?/button>
+      <button class="btn" onclick="saveStrength('${id}')">娣囨繂鐡?/button>
+    </div>
+  `)
+}
+
+async function saveStrength(id) {
+  const idx = data.strengths.findIndex((x) => x.id === id)
+  if (idx === -1) return
+  data.strengths[idx] = {
+    ...data.strengths[idx],
+    num: document.getElementById("es-num").value,
+    title: document.getElementById("es-title").value,
+    titleCN: document.getElementById("es-titlecn").value,
+    desc: document.getElementById("es-desc").value,
+    tags: document.getElementById("es-tags").value.split(",").map((t) => t.trim()).filter(Boolean),
+  }
+  await fetchAPI("/api/strengths/" + id, { method: "PUT", body: JSON.stringify(data.strengths[idx]) })
+  closeModal()
+  renderStrengths()
+  toast("瀹稿弶娲块弬?)
+}
+
+async function deleteStrength(id) {
+  if (!confirm("绾喖鐣鹃崚鐘绘珟閿?)) return
+  await fetchAPI("/api/strengths/" + id, { method: "DELETE" })
+  data.strengths = data.strengths.filter((s) => s.id !== id)
+  renderStrengths()
+  toast("瀹告彃鍨归梽?)
+}
+
+function addStrength() {
+  const id = crypto.randomUUID()
+  data.strengths.push({ id, num: "05", title: "New", titleCN: "閺傞绱崝?, desc: "閹诲繗鍫?, tags: [] })
+  renderStrengths()
+}
+
+function renderInspirations() {
+  document.getElementById("section-title").textContent = "閻忓灚鍔呴弨鎯版"
+  let html = '<div class="card-list">'
+  data.inspirations.forEach((item, i) => {
+    html += `<div class="card-item"><div class="info"><h4>${item.title}</h4><p>${item.category} 璺?${item.subtitle || ""}</p></div><div class="actions"><button class="btn btn-sm btn-outline" onclick="editInspiration('${item.id}')">缂傛牞绶?/button><button class="btn btn-sm btn-danger" onclick="deleteInspiration('${item.id}')">閸掔娀娅?/button></div></div>`
+  })
+  html += '</div><button class="btn" style="margin-top:16px" onclick="addInspiration()">+ 濞ｈ濮為悘鍨妳</button>'
+  document.getElementById("content").innerHTML = html
+}
+
+function editInspiration(id) {
+  const item = data.inspirations.find((x) => x.id === id)
+  if (!item) return
+  openModal(`
+    <h3>缂傛牞绶悘鍨妳</h3>
+    <div class="row">
+      <div class="form-group"><label>閺嶅洭顣?/label><input id="ei-title" value="${item.title}" /></div>
+      <div class="form-group"><label>閼昏鲸鏋冮崜顖涚垼妫?/label><input id="ei-subtitle" value="${item.subtitle || ""}" /></div>
+    </div>
+    <div class="row">
+      <div class="form-group"><label>閸掑棛琚?/label><input id="ei-category" value="${item.category}" /></div>
+      <div class="form-group"><label>閺夈儲绨柧鐐复</label><input id="ei-link" value="${item.link || ""}" /></div>
+    </div>
+    <div class="form-group"><label>濮濓絾鏋冮崘鍛啇</label><textarea id="ei-content" style="min-height:150px">${item.content || ""}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">閸欐牗绉?/button>
+      <button class="btn" onclick="saveInspiration('${id}')">娣囨繂鐡?/button>
+    </div>
+  `)
+}
+
+async function saveInspiration(id) {
+  const idx = data.inspirations.findIndex((x) => x.id === id)
+  if (idx === -1) return
+  data.inspirations[idx] = {
+    ...data.inspirations[idx],
+    title: document.getElementById("ei-title").value,
+    subtitle: document.getElementById("ei-subtitle").value,
+    category: document.getElementById("ei-category").value,
+    link: document.getElementById("ei-link").value,
+    content: document.getElementById("ei-content").value,
+  }
+  await fetchAPI("/api/inspirations/" + id, { method: "PUT", body: JSON.stringify(data.inspirations[idx]) })
+  closeModal()
+  renderInspirations()
+  toast("瀹稿弶娲块弬?)
+}
+
+async function deleteInspiration(id) {
+  if (!confirm("绾喖鐣鹃崚鐘绘珟閿?)) return
+  await fetchAPI("/api/inspirations/" + id, { method: "DELETE" })
+  data.inspirations = data.inspirations.filter((i) => i.id !== id)
+  renderInspirations()
+  toast("瀹告彃鍨归梽?)
+}
+
+function addInspiration() {
+  const id = crypto.randomUUID()
+  data.inspirations.push({ id, title: "閺傛壆浼掗幇?, subtitle: "New Idea", category: "鐠佹崘顓?, content: "" })
+  renderInspirations()
+}
+
+function renderContact() {
+  document.getElementById("section-title").textContent = "閼辨梻閮撮弬鐟扮础"
+  const c = data.contact
+  document.getElementById("content").innerHTML = `
+    <div class="row"><div class="form-group"><label>Email</label><input id="c-email" value="${c.email}" /></div><div class="form-group"><label>瀵邦喕淇?/label><input id="c-wechat" value="${c.wechat}" /></div></div>
+    <div class="row"><div class="form-group"><label>閻絻鐦?/label><input id="c-phone" value="${c.phone}" /></div><div class="form-group"><label>閺嶅洭顣?/label><input id="c-headline" value="${c.headline}" /></div></div>
+    <div class="form-group"><label>閹诲繗鍫弬鍥х摟</label><textarea id="c-blurb">${c.blurb}</textarea></div>
+    <button class="btn" onclick="saveContact()">娣囨繂鐡ㄧ拋鍓х枂</button>
+  `
+}
+
+async function saveContact() {
+  await fetchAPI("/api/contact", { method: "PUT", body: JSON.stringify({
+    email: document.getElementById("c-email").value,
+    wechat: document.getElementById("c-wechat").value,
+    phone: document.getElementById("c-phone").value,
+    headline: document.getElementById("c-headline").value,
+    blurb: document.getElementById("c-blurb").value,
+  })})
+  toast("閼辨梻閮撮弬鐟扮础瀹稿弶娲块弬?)
+}
+
+document.querySelectorAll(".sidebar a").forEach((a) => {
+  a.addEventListener("click", (e) => {
+    e.preventDefault()
+    document.querySelectorAll(".sidebar a").forEach((x) => x.classList.remove("active"))
+    a.classList.add("active")
+    const section = a.dataset.section
+    if (sections[section]) sections[section]()
+  })
+})
+
+async function init() {
+  const authed = await checkAuth()
+  if (authed) {
+    await loadData()
+    renderSite()
+  }
+}
+init()
+</script>
+</body>
+</html>
