@@ -1,25 +1,25 @@
 {
   "site": {
     "logo": "JPENG",
-    "footer": "� 2026 JPENG. All rights reserved"
+    "footer": "© 2026 JPENG. All rights reserved."
   },
   "nav": [
     {
-      "label": "精选作品",
+      "label": "????",
       "href": "/#projects"
     },
     {
-      "label": "个人优势",
+      "label": "????",
       "href": "/#strengths"
     },
     {
-      "label": "灵感创意",
+      "label": "????",
       "href": "/#inspiration"
     }
   ],
   "hero": {
     "tagline": "Visual & AI Designer",
-    "subtitle": "设计代码之间 · 创造有意义的体验",
+    "subtitle": "??????",
     "btnPrimary": "Contact",
     "btnSecondary": "View Works",
     "basedIn": "Beijing"
@@ -27,8 +27,8 @@
   "projects": [
     {
       "id": "p1",
-      "title": "AI 创意平台",
-      "subtitle": "Creative AI Platform",
+      "title": "AI ????",
+      "subtitle": "Creative AI",
       "year": "2025",
       "role": "产品设计 / UI 设计 / AI 设计",
       "tags": [
@@ -105,7 +105,7 @@
       "id": "s1",
       "num": "01",
       "title": "Visual Design",
-      "titleCN": "视觉设计",
+      "titleCN": "????",
       "desc": "6年视觉设计经验，精通品牌识别与排版体系。",
       "tags": [
         "Brand Identity",
@@ -157,9 +157,9 @@
   "inspirations": [
     {
       "id": "i1",
-      "title": "极简主义设计语言",
+      "title": "????",
       "subtitle": "Minimalist Design Language",
-      "category": "设计趋势",
+      "category": "????",
       "link": "https://www.awwwards.com",
       "content": "极简主义在UI设计中不仅仅是一句口号。"
     },
@@ -205,10 +205,10 @@
     }
   ],
   "contact": {
-    "email": "jpeng.design@example.com",
+    "email": "test@test.com",
     "wechat": "JPENG_Design",
-    "phone": "+86 138-0000-0000",
-    "headline": "Let’s create something great together",
-    "blurb": "合作 · 交流 · 想法 — 随时找我聊聊"
+    "phone": "1380000",
+    "headline": "Let us create",
+    "blurb": "Contact me"
   }
 }
