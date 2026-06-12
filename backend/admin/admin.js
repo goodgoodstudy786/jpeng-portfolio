@@ -76,7 +76,7 @@ function esc(s) { if (!s) return ""; return String(s).replace(/&/g, "&amp;").rep
 // 鈹€鈹€ Site 鈹€鈹€
 function renderSite() {
   document.getElementById("section-title").textContent = "网站设置";
-  document.getElementById("content").innerHTML = '<div class="row"><div class="form-group"><label>Logo 文字</label><input id="site-logo" value="' + esc(data.site.logo) + '" /></div><div class="form-group"><label>底部版权文字</label><input id="site-footer" value="' + esc(data.site.footer) + '" /></div></div><button class="btn" onclick="saveSite()">保存设置</button><button class="btn btn-danger" style="margin-left:10px" onclick="doLogout()">閫€退出登录?/button>';
+  document.getElementById("content").innerHTML = '<div class="row"><div class="form-group"><label>Logo 文字</label><input id="site-logo" value="' + esc(data.site.logo) + '" /></div><div class="form-group"><label>底部版权文字</label><input id="site-footer" value="' + esc(data.site.footer) + '" /></div></div><button class="btn" onclick="saveSite()">保存设置</button><button class="btn btn-danger" style="margin-left:10px" onclick="doLogout()">退出登录?/button>';
 }
 async function saveSite() { await fetchAPI("/api/site", { method: "PUT", body: JSON.stringify({ logo: document.getElementById("site-logo").value, footer: document.getElementById("site-footer").value }) }); toast("已保存"); }
 
