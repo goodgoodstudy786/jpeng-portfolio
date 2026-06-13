@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 
 export default function useInView(options = {}) {
   const ref = useRef(null)
-  const [inView, setInView] = useState(false)
+  const [inView, setInView] = useState(true)
 
   useEffect(() => {
     const el = ref.current

@@ -67,7 +67,7 @@ async function loadData() { data = await fetchAPI("/api/data"); }
 
 function openModal(h) { document.getElementById("modal-content").innerHTML = h; document.getElementById("modal").classList.add("open"); }
 function closeModal() { document.getElementById("modal").classList.remove("open"); }
-document.getElementById("modal").addEventListener("click", function(e) { if (e.target === e.currentTarget) closeModal(); });
+// 弹窗只能通过取消/保存按钮关闭，点击遮罩不关闭
 
 var sections = { site: renderSite, nav: renderNav, hero: renderHero, projects: renderProjects, strengths: renderStrengths, inspirations: renderInspirations, contact: renderContact };
 

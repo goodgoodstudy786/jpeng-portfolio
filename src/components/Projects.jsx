@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import useInView from "../hooks/useInView"
 import { fetchAllData } from "../api"
 import "./Projects.css"
 
@@ -15,7 +14,6 @@ const TABS = [
 export default function Projects() {
   const [activeTab, setActiveTab] = useState("all")
   const [expanded, setExpanded] = useState(false)
-  const [sectionRef, inView] = useInView()
   const [projects, setProjects] = useState([])
 
   useEffect(() => {
@@ -33,7 +31,7 @@ export default function Projects() {
   const visible = expanded ? filtered : filtered.slice(0, 6)
 
   return (
-    <section className={`work-section ${inView ? "in-view" : ""}`} id="projects" ref={sectionRef}>
+    <section className="work-section in-view" id="projects">
       <div className="container">
         <div className="work-top">
           <div className="work-header">

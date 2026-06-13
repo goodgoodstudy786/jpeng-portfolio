@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from "react"
-import useInView from "../hooks/useInView"
 import { fetchAllData } from "../api"
 import "./Strengths.css"
 
@@ -16,7 +15,6 @@ function getRandomRotation() {
 
 export default function Strengths() {
   const [hovered, setHovered] = useState(null)
-  const [sectionRef, inView] = useInView()
   const [strengths, setStrengths] = useState([])
 
   useEffect(() => {
@@ -30,7 +28,7 @@ export default function Strengths() {
   }, [strengths])
 
   return (
-    <section className={`strengths-section ${inView ? "in-view" : ""}`} id="strengths" ref={sectionRef}>
+    <section className="strengths-section in-view" id="strengths">
       <div className="container">
         <div className="strengths-header">
           <div className="section-label">Expertise</div>

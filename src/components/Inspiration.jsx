@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import useInView from "../hooks/useInView"
 import { fetchAllData } from "../api"
 import "./Inspiration.css"
 
 export default function Inspiration() {
-  const [sectionRef, inView] = useInView()
   const [items, setItems] = useState([])
 
   useEffect(() => {
@@ -15,7 +13,7 @@ export default function Inspiration() {
   }, [])
 
   return (
-    <section className={`inspiration-section ${inView ? "in-view" : ""}`} id="inspiration" ref={sectionRef}>
+    <section className="inspiration-section in-view" id="inspiration">
       <div className="container">
         <div className="inspiration-header">
           <div className="section-label">Inspiration</div>

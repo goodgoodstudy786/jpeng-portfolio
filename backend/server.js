@@ -105,7 +105,7 @@ function getData() { return db.load() }
 function saveData(data) { db.save(data) }
 
 // ── API (protected by authMiddleware) ──
-app.get("/api/data", (req, res) => { res.json(getData()) })
+app.get("/api/data", (req, res) => { res.set("Cache-Control", "no-store, no-cache, must-revalidate"); res.json(getData()) })
 
 app.put("/api/site", authMiddleware, (req, res) => {
   const data = getData(); data.site = { ...data.site, ...req.body }; saveData(data); res.json({ success: true })
