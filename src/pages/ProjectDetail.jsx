@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import Navbar from "../components/Navbar"
-import useInView from "../hooks/useInView"
 import Loading from "../components/Loading"
 import Contact from "../components/Contact"
 import BackToTop from "../components/BackToTop"
@@ -14,7 +13,6 @@ export default function ProjectDetail() {
   const [loading, setLoading] = useState(true)
   const [project, setProject] = useState(null)
   const [projects, setProjects] = useState([])
-  const [bodyRef, bodyInView] = useInView()
 
   useEffect(() => {
     setLoading(true)
@@ -69,7 +67,7 @@ export default function ProjectDetail() {
           </div>
         </div>
       </div>
-      <div className={`detail-body container ${bodyInView ? "in-view" : ""}`} ref={bodyRef}>
+      <div className="detail-body container" style={{ paddingTop: "60px" }}>
         <div className="detail-overview">
           <h2>项目概述</h2>
           <p>{project.overview}</p>

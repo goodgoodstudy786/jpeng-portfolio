@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import Navbar from "../components/Navbar"
-import useInView from "../hooks/useInView"
 import Loading from "../components/Loading"
 import Contact from "../components/Contact"
 import BackToTop from "../components/BackToTop"
@@ -14,7 +13,6 @@ export default function InspirationDetail() {
   const [loading, setLoading] = useState(true)
   const [item, setItem] = useState(null)
   const [items, setItems] = useState([])
-  const [bodyRef, bodyInView] = useInView()
 
   useEffect(() => {
     setLoading(true)
@@ -54,7 +52,7 @@ export default function InspirationDetail() {
   return (
     <div className="detail-page">
       <Navbar />
-      <div className={`detail-body container ${bodyInView ? "in-view" : ""}`} ref={bodyRef} style={{ paddingTop: "140px" }}>
+      <div className="detail-body container" style={{ paddingTop: "140px" }}>
         <Link to="/inspirations" className="detail-back-link" style={{ marginBottom: "24px", display: "inline-block" }}>← 返回灵感列表</Link>
         <div className="detail-meta-header">
           <span className="inspiration-category">{item.category}</span>
