@@ -302,3 +302,79 @@
   .inspo-card-full.wide { grid-column: span 1; }
   .detail-body { padding-top: 100px !important; }
 }
+
+
+/* 富文本内容样式 */
+.detail-content-html {
+  line-height: 1.8;
+  color: var(--text-secondary, #bbb);
+  font-size: 1rem;
+}
+
+.detail-content-html p {
+  margin-bottom: 16px;
+  color: var(--text-secondary, #bbb);
+}
+
+.detail-content-html h1,
+.detail-content-html h2,
+.detail-content-html h3 {
+  color: var(--text-primary, #f5f5f5);
+  margin: 32px 0 16px;
+  font-weight: 600;
+}
+
+.detail-content-html h1 { font-size: 1.5em; }
+.detail-content-html h2 { font-size: 1.3em; }
+.detail-content-html h3 { font-size: 1.15em; }
+
+.detail-content-html strong {
+  color: var(--text-primary, #f5f5f5);
+  font-weight: 600;
+}
+
+.detail-content-html a {
+  color: #C0FE27;
+  text-decoration: underline;
+}
+
+.detail-content-html img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 20px 0;
+  display: block;
+}
+
+.detail-content-html blockquote {
+  border-left: 3px solid #C0FE27;
+  padding-left: 16px;
+  margin: 16px 0;
+  color: rgba(255,255,255,0.5);
+  font-style: italic;
+}
+
+.detail-content-html ul,
+.detail-content-html ol {
+  padding-left: 24px;
+  margin: 12px 0;
+}
+
+.detail-content-html li {
+  margin-bottom: 8px;
+}
+
+.detail-content-html code {
+  background: rgba(255,255,255,0.06);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.detail-content-html pre {
+  background: rgba(255,255,255,0.04);
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 16px 0;
+}

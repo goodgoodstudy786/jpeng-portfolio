@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import useInView from "../hooks/useInView"
+import Loading from "../components/Loading"
 import Contact from "../components/Contact"
 import BackToTop from "../components/BackToTop"
 import ThemeToggle from "../components/ThemeToggle"
@@ -10,21 +11,30 @@ import "./DetailPage.css"
 
 export default function InspirationDetail() {
   const { id } = useParams()
+  const [loading, setLoading] = useState(true)
   const [item, setItem] = useState(null)
   const [items, setItems] = useState([])
   const [bodyRef, bodyInView] = useInView()
 
   useEffect(() => {
+    setLoading(true)
+    setItem(null)
     fetchAllData().then((d) => {
       if (d.inspirations) setItems(d.inspirations)
       const found = d.inspirations?.find((i) => i.id === id)
       if (found) setItem(found)
-    }).catch(() => {})
+    }).catch(() => {}).finally(() => {
+      setLoading(false)
+    })
   }, [id])
 
   const currentIdx = items.findIndex((i) => i.id === id)
   const prevId = currentIdx > 0 ? items[currentIdx - 1]?.id : null
   const nextId = currentIdx < items.length - 1 ? items[currentIdx + 1]?.id : null
+
+  if (loading) {
+    return <Loading />
+  }
 
   if (!item) {
     return (
@@ -52,11 +62,7 @@ export default function InspirationDetail() {
         <h1 className="detail-title" style={{ fontSize: "clamp(2rem,4vw,3rem)", marginBottom: "8px" }}>{item.title}</h1>
         <p className="detail-subtitle" style={{ marginBottom: "48px" }}>{item.subtitle}</p>
         <div className="detail-content-text">
-          {(item.content || "").split("\n\n").map((block, i) => (
-            <p key={i} style={{ marginBottom: "20px", lineHeight: "1.8", color: "var(--text-secondary)" }}>
-              {block.split("\n").map((line, j) => (<span key={j}>{line}<br /></span>))}
-            </p>
-          ))}
+          <div className="detail-content-html" dangerouslySetInnerHTML={{ __html: item.content || "" }} />
         </div>
         <div className="inspiration-footer-actions">
           <button className="inspiration-link-btn" onClick={handleOpenLink}>

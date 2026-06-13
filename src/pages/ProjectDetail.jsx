@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import useInView from "../hooks/useInView"
+import Loading from "../components/Loading"
 import Contact from "../components/Contact"
 import BackToTop from "../components/BackToTop"
 import ThemeToggle from "../components/ThemeToggle"
@@ -10,16 +11,21 @@ import "./DetailPage.css"
 
 export default function ProjectDetail() {
   const { id } = useParams()
+  const [loading, setLoading] = useState(true)
   const [project, setProject] = useState(null)
   const [projects, setProjects] = useState([])
   const [bodyRef, bodyInView] = useInView()
 
   useEffect(() => {
+    setLoading(true)
+    setProject(null)
     fetchAllData().then((d) => {
       if (d.projects) setProjects(d.projects)
       const found = d.projects?.find((p) => p.id === id)
       if (found) setProject(found)
-    }).catch(() => {})
+    }).catch(() => {}).finally(() => {
+      setLoading(false)
+    })
   }, [id])
 
   const currentIdx = projects.findIndex((p) => p.id === id)
@@ -27,6 +33,10 @@ export default function ProjectDetail() {
   const nextId = currentIdx < projects.length - 1 ? projects[currentIdx + 1]?.id : null
   const prevTitle = prevId ? projects[currentIdx - 1]?.title : null
   const nextTitle = nextId ? projects[currentIdx + 1]?.title : null
+
+  if (loading) {
+    return <Loading />
+  }
 
   if (!project) {
     return (
@@ -67,7 +77,7 @@ export default function ProjectDetail() {
         {(project.sections || []).map((sec, i) => (
           <div key={i} className="detail-section">
             <h2>{sec.heading}</h2>
-            <p>{sec.content}</p>
+            <div className="detail-content-html" dangerouslySetInnerHTML={{ __html: sec.content }} />
           </div>
         ))}
       </div>
