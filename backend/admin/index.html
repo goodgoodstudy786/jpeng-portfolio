@@ -94,7 +94,8 @@ textarea{min-height:80px;resize:vertical}
 <div class="main" id="app"><h1 id="section-title">网站设置</h1><div id="content"></div></div>
 <div class="modal" id="modal"><div class="modal-content" id="modal-content"></div></div>
 <div class="toast" id="toast">保存成功</div>
-<script>\nconst API = "";
+<script>
+const API = "";
 let data = {};
 let token = localStorage.getItem("jpeng-cms-token") || "";
 function setToken(t) { token = t; localStorage.setItem("jpeng-cms-token", t); }
@@ -386,6 +387,9 @@ document.querySelectorAll(".sidebar a").forEach(function(a) {
     var s = a.dataset.section;
     if (sections[s]) sections[s]();
   });
-});\n</script>
+});
+</script>
 </body>
 </html>
+
+
