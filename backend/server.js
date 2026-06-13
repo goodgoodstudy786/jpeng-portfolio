@@ -180,7 +180,8 @@ app.listen(PORT, "::", () => {
     const raw = fs.readFileSync(DB_PATH, "utf-8")
     const parsed = JSON.parse(raw)
     const json = JSON.stringify(parsed)
-    if (/[\u3400-\u4dff]/.test(json) || json.includes("\ufffd") || json.includes("????")) {
+    // Only check for replacement character (encoding corruption)
+    if (/[\u3400-\u4dff]/.test(json) || json.includes("\ufffd")) {
       console.log("Corrupted data detected on startup, deleting and resetting")
       fs.unlinkSync(DB_PATH)
     }

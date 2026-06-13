@@ -57,9 +57,8 @@ const DEFAULT_DATA = {
 
 function isDataCorrupted(data) {
   const json = JSON.stringify(data)
+  // Only check for replacement character (encoding corruption)
   if (json.includes("\ufffd")) return true
-  if (json.includes("????")) return true
-  if (json.includes("钬测") || json.includes("瀛暟")) return true
   return false
 }
 
