@@ -1,4 +1,4 @@
-const API = "";
+﻿const API = "";
 let data = {};
 let token = localStorage.getItem("jpeng-cms-token") || "";
 function setToken(t) { token = t; localStorage.setItem("jpeng-cms-token", t); }
@@ -73,14 +73,14 @@ var sections = { site: renderSite, nav: renderNav, hero: renderHero, projects: r
 
 function esc(s) { if (!s) return ""; return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 
-// 鈹€鈹€ Site 鈹€鈹€
+// ── Site ──
 function renderSite() {
   document.getElementById("section-title").textContent = "网站设置";
   document.getElementById("content").innerHTML = '<div class="row"><div class="form-group"><label>Logo 文字</label><input id="site-logo" value="' + esc(data.site.logo) + '" /></div><div class="form-group"><label>底部版权文字</label><input id="site-footer" value="' + esc(data.site.footer) + '" /></div></div><button class="btn" onclick="saveSite()">保存设置</button><button class="btn btn-danger" style="margin-left:10px" onclick="doLogout()">退出登录</button>';
 }
 async function saveSite() { await fetchAPI("/api/site", { method: "PUT", body: JSON.stringify({ logo: document.getElementById("site-logo").value, footer: document.getElementById("site-footer").value }) }); toast("已保存"); }
 
-// 鈹€鈹€ Nav 鈹€鈹€
+// ── Nav ──
 function renderNav() {
   document.getElementById("section-title").textContent = "导航菜单";
   var h = '<div class="card-list">';
@@ -93,15 +93,15 @@ function saveNav(i) { data.nav[i] = { label: document.getElementById("edit-nav-l
 function addNav() { data.nav.push({ label: "新菜单", href: "/#new" }); renderNav(); }
 async function saveNavData() { await fetchAPI("/api/nav", { method: "PUT", body: JSON.stringify(data.nav) }); toast("导航已保存"); }
 
-// 鈹€鈹€ Hero 鈹€鈹€
+// ── Hero ──
 function renderHero() {
   document.getElementById("section-title").textContent = "Banner 设置";
   var h = data.hero;
-  document.getElementById("content").innerHTML = '<div class="row"><div class="form-group"><label>标语（英文）</label><input id="hero-tagline" value="' + esc(h.tagline) + '" /></div><div class="form-group"><label>副标题（中文）/label><input id="hero-subtitle" value="' + esc(h.subtitle) + '" /></div></div><div class="row"><div class="form-group"><label>主按钮文字</label><input id="hero-btn-primary" value="' + esc(h.btnPrimary) + '" /></div><div class="form-group"><label>娆℃寜閽枃瀛</label><input id="hero-btn-secondary" value="' + esc(h.btnSecondary) + '" /></div></div><div class="row"><div class="form-group"><label>城市（Based in）/label><input id="hero-basedin" value="' + esc(h.basedIn) + '" /></div></div><button class="btn" onclick="saveHero()">保存设置</button>';
+  document.getElementById("content").innerHTML = '<div class="row"><div class="form-group"><label>标语（英文）</label><input id="hero-tagline" value="' + esc(h.tagline) + '" /></div><div class="form-group"><label>副标题（中文）</label><input id="hero-subtitle" value="' + esc(h.subtitle) + '" /></div></div><div class="row"><div class="form-group"><label>主按钮文字</label><input id="hero-btn-primary" value="' + esc(h.btnPrimary) + '" /></div><div class="form-group"><label>次按钮文字</label><input id="hero-btn-secondary" value="' + esc(h.btnSecondary) + '" /></div></div><div class="row"><div class="form-group"><label>城市（Based in）</label><input id="hero-basedin" value="' + esc(h.basedIn) + '" /></div></div><button class="btn" onclick="saveHero()">保存设置</button>';
 }
 async function saveHero() { await fetchAPI("/api/hero", { method: "PUT", body: JSON.stringify({ tagline: document.getElementById("hero-tagline").value, subtitle: document.getElementById("hero-subtitle").value, btnPrimary: document.getElementById("hero-btn-primary").value, btnSecondary: document.getElementById("hero-btn-secondary").value, basedIn: document.getElementById("hero-basedin").value }) }); toast("Banner 已保存"); }
 
-// 鈹€鈹€ Projects 鈹€鈹€
+// ── Projects ──
 function renderProjects() {
   document.getElementById("section-title").textContent = "精选作品";
   var h = '<div class="card-list">';
@@ -116,8 +116,8 @@ function editProject(id) {
   var p = data.projects.find(function(x) { return x.id === id; });
   if (!p) return;
   openModal(
-    '<h3>编辑浣滃搧</h3>' +
-    '<div class="row"><div class="form-group"><label>标题</label><input id="ep-title" value="' + esc(p.title) + '" /></div><div class="form-group"><label>英文副爣棰</label><input id="ep-subtitle" value="' + esc(p.subtitle || "") + '" /></div></div>' +
+    '<h3>编辑作品</h3>' +
+    '<div class="row"><div class="form-group"><label>标题</label><input id="ep-title" value="' + esc(p.title) + '" /></div><div class="form-group"><label>英文副标题</label><input id="ep-subtitle" value="' + esc(p.subtitle || "") + '" /></div></div>' +
     '<div class="row"><div class="form-group"><label>年份</label><input id="ep-year" value="' + esc(p.year || "") + '" /></div><div class="form-group"><label>角色</label><input id="ep-role" value="' + esc(p.role || "") + '" /></div></div>' +
     '<div class="form-group"><label>鏍囩锛堥€标签（逗号分隔）</label><input id="ep-tags" value="' + esc((p.tags || []).join(", ")) + '" /></div>' +
     '<div class="form-group"><label>概述</label><textarea id="ep-overview">' + esc(p.overview || "") + '</textarea></div>' +
@@ -161,7 +161,7 @@ function addProject() {
   renderProjects();
 }
 
-// 鈹€鈹€ Strengths 鈹€鈹€
+// ── Strengths ──
 function renderStrengths() {
   document.getElementById("section-title").textContent = "个人优势";
   var h = '<div class="card-list">';
@@ -176,8 +176,8 @@ function editStrength(id) {
   var s = data.strengths.find(function(x) { return x.id === id; });
   if (!s) return;
   openModal(
-    '<h3>编辑浼樺娍</h3>' +
-    '<div class="row"><div class="form-group"><label>编号</label><input id="es-num" value="' + esc(s.num) + '" /></div><div class="form-group"><label>鑻辨枃标题</label><input id="es-title" value="' + esc(s.title) + '" /></div></div>' +
+    '<h3>编辑优势</h3>' +
+    '<div class="row"><div class="form-group"><label>编号</label><input id="es-num" value="' + esc(s.num) + '" /></div><div class="form-group"><label>英文标题</label><input id="es-title" value="' + esc(s.title) + '" /></div></div>' +
     '<div class="row"><div class="form-group"><label>中文标题</label><input id="es-titlecn" value="' + esc(s.titleCN) + '" /></div><div class="form-group"><label>鏍囩锛堥€标签（逗号分隔）</label><input id="es-tags" value="' + esc((s.tags || []).join(", ")) + '" /></div></div>' +
     '<div class="form-group"><label>描述</label><textarea id="es-desc">' + esc(s.desc) + '</textarea></div>' +
     '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn" onclick="saveStrength(\'' + id + '\')">保存</button></div>'
@@ -215,7 +215,7 @@ function addStrength() {
   renderStrengths();
 }
 
-// 鈹€鈹€ Inspirations 鈹€鈹€
+// ── Inspirations ──
 function renderInspirations() {
   document.getElementById("section-title").textContent = "灵感收藏";
   var h = '<div class="card-list">';
@@ -230,9 +230,9 @@ function editInspiration(id) {
   var item = data.inspirations.find(function(x) { return x.id === id; });
   if (!item) return;
   openModal(
-    '<h3>编辑鐏垫劅</h3>' +
-    '<div class="row"><div class="form-group"><label>标题</label><input id="ei-title" value="' + esc(item.title) + '" /></div><div class="form-group"><label>英文副爣棰</label><input id="ei-subtitle" value="' + esc(item.subtitle || "") + '" /></div></div>' +
-    '<div class="row"><div class="form-group"><label>分类</label><input id="ei-category" value="' + esc(item.category) + '" /></div><div class="form-group"><label>鏉ユ簮链接</label><input id="ei-link" value="' + esc(item.link || "") + '" /></div></div>' +
+    '<h3>编辑灵感</h3>' +
+    '<div class="row"><div class="form-group"><label>标题</label><input id="ei-title" value="' + esc(item.title) + '" /></div><div class="form-group"><label>英文副标题</label><input id="ei-subtitle" value="' + esc(item.subtitle || "") + '" /></div></div>' +
+    '<div class="row"><div class="form-group"><label>分类</label><input id="ei-category" value="' + esc(item.category) + '" /></div><div class="form-group"><label>来源链接</label><input id="ei-link" value="' + esc(item.link || "") + '" /></div></div>' +
     '<div class="form-group"><label>正文内容</label><textarea id="ei-content" style="min-height:150px">' + esc(item.content || "") + '</textarea></div>' +
     '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn" onclick="saveInspiration(\'' + id + '\')">保存</button></div>'
   );
@@ -269,19 +269,19 @@ function addInspiration() {
   renderInspirations();
 }
 
-// 鈹€鈹€ Contact 鈹€鈹€
+// ── Contact ──
 function renderContact() {
   document.getElementById("section-title").textContent = "联系方式";
   var c = data.contact;
   document.getElementById("content").innerHTML =
     '<div class="row"><div class="form-group"><label>Email</label><input id="c-email" value="' + esc(c.email) + '" /></div><div class="form-group"><label>寰俊</label><input id="c-wechat" value="' + esc(c.wechat) + '" /></div></div>' +
     '<div class="row"><div class="form-group"><label>电话</label><input id="c-phone" value="' + esc(c.phone) + '" /></div><div class="form-group"><label>标题</label><input id="c-headline" value="' + esc(c.headline) + '" /></div></div>' +
-    '<div class="form-group"><label>描述鏂囧瓧</label><textarea id="c-blurb">' + esc(c.blurb) + '</textarea></div>' +
+    '<div class="form-group"><label>描述文字</label><textarea id="c-blurb">' + esc(c.blurb) + '</textarea></div>' +
     '<button class="btn" onclick="saveContact()">保存设置</button>';
 }
 async function saveContact() { await fetchAPI("/api/contact", { method: "PUT", body: JSON.stringify({ email: document.getElementById("c-email").value, wechat: document.getElementById("c-wechat").value, phone: document.getElementById("c-phone").value, headline: document.getElementById("c-headline").value, blurb: document.getElementById("c-blurb").value }) }); toast("联系方式已更新"); }
 
-// 鈹€鈹€ Sidebar nav 鈹€鈹€
+// ── Sidebar nav ──
 document.querySelectorAll(".sidebar a").forEach(function(a) {
   a.addEventListener("click", function(e) {
     e.preventDefault();

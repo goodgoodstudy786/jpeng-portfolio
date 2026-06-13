@@ -1,214 +1,214 @@
-{
-  "site": {
-    "logo": "JPENG",
-    "footer": "© 2026 JPENG. All rights reserved."
-  },
-  "nav": [
-    {
-      "label": "????",
-      "href": "/#projects"
-    },
-    {
-      "label": "????",
-      "href": "/#strengths"
-    },
-    {
-      "label": "????",
-      "href": "/#inspiration"
-    }
-  ],
-  "hero": {
-    "tagline": "Visual & AI Designer",
-    "subtitle": "??????",
-    "btnPrimary": "Contact",
-    "btnSecondary": "View Works",
-    "basedIn": "Beijing"
-  },
-  "projects": [
-    {
-      "id": "p1",
-      "title": "AI ????",
-      "subtitle": "Creative AI",
-      "year": "2025",
-      "role": "产品设计 / UI 设计 / AI 设计",
-      "tags": [
-        "AI 设计",
-        "产品设计",
-        "SaaS"
-      ],
-      "overview": "面向创作者的全栈AI设计平台",
-      "sections": [
-        {
-          "heading": "设计目标",
-          "content": "打造AI工具"
-        }
-      ]
-    },
-    {
-      "id": "p2",
-      "title": "品牌视觉系统",
-      "subtitle": "Brand Identity System",
-      "year": "2024",
-      "role": "品牌设计 / VI 系统",
-      "tags": [
-        "品牌设计",
-        "VI 系统"
-      ],
-      "overview": "为科技品牌打造的全套视觉识别系统",
-      "sections": [
-        {
-          "heading": "品牌定位",
-          "content": "AI基础设施公司"
-        }
-      ]
-    },
-    {
-      "id": "p3",
-      "title": "数据可视化平台",
-      "subtitle": "Data Dashboard",
-      "year": "2024",
-      "role": "UI 设计 / 数据可视化",
-      "tags": [
-        "UI 设计",
-        "数据可视化",
-        "B端"
-      ],
-      "overview": "企业级数据监控与分析仪表盘",
-      "sections": [
-        {
-          "heading": "信息架构",
-          "content": "卡片式布局"
-        }
-      ]
-    },
-    {
-      "id": "p4",
-      "title": "智能生活App",
-      "subtitle": "Smart Lifestyle App",
-      "year": "2023",
-      "role": "UX 设计 / 移动端设计",
-      "tags": [
-        "移动端",
-        "用户体验"
-      ],
-      "overview": "基于AI推荐的生活管理应用",
-      "sections": [
-        {
-          "heading": "用户研究",
-          "content": "深度访谈"
-        }
-      ]
-    }
-  ],
-  "strengths": [
-    {
-      "id": "s1",
-      "num": "01",
-      "title": "Visual Design",
-      "titleCN": "????",
-      "desc": "6年视觉设计经验，精通品牌识别与排版体系。",
-      "tags": [
-        "Brand Identity",
-        "Typography",
-        "Color System",
-        "Layout Grid"
-      ]
-    },
-    {
-      "id": "s2",
-      "num": "02",
-      "title": "AI Design",
-      "titleCN": "AI 设计",
-      "desc": "将AI工具深度融合设计流程。",
-      "tags": [
-        "Midjourney",
-        "Stable Diffusion",
-        "GPT-4 Vision",
-        "ComfyUI"
-      ]
-    },
-    {
-      "id": "s3",
-      "num": "03",
-      "title": "UI & UX",
-      "titleCN": "界面与体验",
-      "desc": "以用户出发的设计思维。",
-      "tags": [
-        "Figma",
-        "Prototyping",
-        "Design System",
-        "User Research"
-      ]
-    },
-    {
-      "id": "s4",
-      "num": "04",
-      "title": "Design Tech",
-      "titleCN": "设计技术",
-      "desc": "熟悉HTML/CSS/JavaScript。",
-      "tags": [
-        "React",
-        "CSS Animation",
-        "Responsive",
-        "Tailwind"
-      ]
-    }
-  ],
-  "inspirations": [
-    {
-      "id": "i1",
-      "title": "????",
-      "subtitle": "Minimalist Design Language",
-      "category": "????",
-      "link": "https://www.awwwards.com",
-      "content": "极简主义在UI设计中不仅仅是一句口号。"
-    },
-    {
-      "id": "i2",
-      "title": "AI 生成艺术的边界",
-      "subtitle": "Boundaries of AI Art",
-      "category": "AI 创意",
-      "link": "https://www.midjourney.com",
-      "content": "AI生成艺术正在重新定义创意表达的边界。"
-    },
-    {
-      "id": "i3",
-      "title": "设计系统中的色彩科学",
-      "subtitle": "Color Science in Design Systems",
-      "category": "设计系统",
-      "link": "https://design.google",
-      "content": "色彩是设计系统中最具影响力的元素。"
-    },
-    {
-      "id": "i4",
-      "title": "交互设计的未来形态",
-      "subtitle": "Future of Interaction Design",
-      "category": "交互设计",
-      "link": "https://dribbble.com",
-      "content": "交互设计正在向更自然的方向演进。"
-    },
-    {
-      "id": "i5",
-      "title": "品牌故事的可视化表达",
-      "subtitle": "Visual Storytelling for Brands",
-      "category": "品牌设计",
-      "link": "https://www.behance.net",
-      "content": "品牌故事的可视化是将抽象理念转化为视觉体验。"
-    },
-    {
-      "id": "i6",
-      "title": "暗色模式的界面设计",
-      "subtitle": "Dark Mode UI Design",
-      "category": "UI 设计",
-      "link": "https://dribbble.com",
-      "content": "暗色模式已成为现代应用的标配。"
-    }
-  ],
-  "contact": {
-    "email": "test@test.com",
-    "wechat": "JPENG_Design",
-    "phone": "1380000",
-    "headline": "Let us create",
-    "blurb": "Contact me"
-  }
+﻿{
+    "projects":  [
+                     {
+                         "id":  "p1",
+                         "subtitle":  "Creative AI",
+                         "sections":  [
+                                          {
+                                              "content":  "打造AI工具",
+                                              "heading":  "设计目标"
+                                          }
+                                      ],
+                         "overview":  "面向创作者的全栈AI设计平台",
+                         "title":  "AI 创意设计平台",
+                         "tags":  [
+                                      "AI 设计",
+                                      "产品设计",
+                                      "SaaS"
+                                  ],
+                         "year":  "2025",
+                         "role":  "产品设计 / UI 设计 / AI 设计"
+                     },
+                     {
+                         "id":  "p2",
+                         "subtitle":  "Brand Identity System",
+                         "sections":  [
+                                          {
+                                              "content":  "AI基础设施公司",
+                                              "heading":  "品牌定位"
+                                          }
+                                      ],
+                         "overview":  "为科技品牌打造的全套视觉识别系统",
+                         "title":  "品牌视觉系统",
+                         "tags":  [
+                                      "品牌设计",
+                                      "VI 系统"
+                                  ],
+                         "year":  "2024",
+                         "role":  "品牌设计 / VI 系统"
+                     },
+                     {
+                         "id":  "p3",
+                         "subtitle":  "Data Dashboard",
+                         "sections":  [
+                                          {
+                                              "content":  "卡片式布局",
+                                              "heading":  "信息架构"
+                                          }
+                                      ],
+                         "overview":  "企业级数据监控与分析仪表盘",
+                         "title":  "数据可视化平台",
+                         "tags":  [
+                                      "UI 设计",
+                                      "数据可视化",
+                                      "B端"
+                                  ],
+                         "year":  "2024",
+                         "role":  "UI 设计 / 数据可视化"
+                     },
+                     {
+                         "id":  "p4",
+                         "subtitle":  "Smart Lifestyle App",
+                         "sections":  [
+                                          {
+                                              "content":  "深度访谈",
+                                              "heading":  "用户研究"
+                                          }
+                                      ],
+                         "overview":  "基于AI推荐的生活管理应用",
+                         "title":  "智能生活App",
+                         "tags":  [
+                                      "移动端",
+                                      "用户体验"
+                                  ],
+                         "year":  "2023",
+                         "role":  "UX 设计 / 移动端设计"
+                     }
+                 ],
+    "contact":  {
+                    "email":  "jpeng@design.com",
+                    "wechat":  "JPENG_Design",
+                    "headline":  "Let us create",
+                    "blurb":  "Contact me",
+                    "phone":  "1380000"
+                },
+    "inspirations":  [
+                         {
+                             "id":  "i1",
+                             "content":  "极简主义在UI设计中不仅仅是一句口号。",
+                             "link":  "https://www.awwwards.com",
+                             "category":  "UI 设计",
+                             "subtitle":  "Minimalist Design Language",
+                             "title":  "极简主义设计语言"
+                         },
+                         {
+                             "id":  "i2",
+                             "content":  "AI生成艺术正在重新定义创意表达的边界。",
+                             "link":  "https://www.midjourney.com",
+                             "category":  "AI 创意",
+                             "subtitle":  "Boundaries of AI Art",
+                             "title":  "AI 生成艺术的边界"
+                         },
+                         {
+                             "id":  "i3",
+                             "content":  "色彩是设计系统中最具影响力的元素。",
+                             "link":  "https://design.google",
+                             "category":  "设计系统",
+                             "subtitle":  "Color Science in Design Systems",
+                             "title":  "设计系统中的色彩科学"
+                         },
+                         {
+                             "id":  "i4",
+                             "content":  "交互设计正在向更自然的方向演进。",
+                             "link":  "https://dribbble.com",
+                             "category":  "交互设计",
+                             "subtitle":  "Future of Interaction Design",
+                             "title":  "交互设计的未来形态"
+                         },
+                         {
+                             "id":  "i5",
+                             "content":  "品牌故事的可视化是将抽象理念转化为视觉体验。",
+                             "link":  "https://www.behance.net",
+                             "category":  "品牌设计",
+                             "subtitle":  "Visual Storytelling for Brands",
+                             "title":  "品牌故事的可视化表达"
+                         },
+                         {
+                             "id":  "i6",
+                             "content":  "暗色模式已成为现代应用的标配。",
+                             "link":  "https://dribbble.com",
+                             "category":  "UI 设计",
+                             "subtitle":  "Dark Mode UI Design",
+                             "title":  "暗色模式的界面设计"
+                         }
+                     ],
+    "site":  {
+                 "logo":  "JPENG",
+                 "footer":  "© 2026 JPENG. All rights reserved."
+             },
+    "nav":  [
+                {
+                    "href":  "/#projects",
+                    "label":  "精选作品"
+                },
+                {
+                    "href":  "/#strengths",
+                    "label":  "个人优势"
+                },
+                {
+                    "href":  "/#inspiration",
+                    "label":  "灵感创意"
+                }
+            ],
+    "hero":  {
+                 "subtitle":  "视觉与AI设计师",
+                 "btnPrimary":  "Contact",
+                 "btnSecondary":  "View Works",
+                 "basedIn":  "Beijing",
+                 "tagline":  "Visual \u0026 AI Designer"
+             },
+    "strengths":  [
+                      {
+                          "id":  "s1",
+                          "tags":  [
+                                       "Brand Identity",
+                                       "Typography",
+                                       "Color System",
+                                       "Layout Grid"
+                                   ],
+                          "desc":  "6年视觉设计经验，精通品牌识别与排版体系。",
+                          "titleCN":  "视觉设计",
+                          "title":  "Visual Design",
+                          "num":  "01"
+                      },
+                      {
+                          "id":  "s2",
+                          "tags":  [
+                                       "Midjourney",
+                                       "Stable Diffusion",
+                                       "GPT-4 Vision",
+                                       "ComfyUI"
+                                   ],
+                          "desc":  "将AI工具深度融合设计流程。",
+                          "titleCN":  "AI 设计",
+                          "title":  "AI Design",
+                          "num":  "02"
+                      },
+                      {
+                          "id":  "s3",
+                          "tags":  [
+                                       "Figma",
+                                       "Prototyping",
+                                       "Design System",
+                                       "User Research"
+                                   ],
+                          "desc":  "以用户出发的设计思维。",
+                          "titleCN":  "界面与体验",
+                          "title":  "UI \u0026 UX",
+                          "num":  "03"
+                      },
+                      {
+                          "id":  "s4",
+                          "tags":  [
+                                       "React",
+                                       "CSS Animation",
+                                       "Responsive",
+                                       "Tailwind"
+                                   ],
+                          "desc":  "熟悉HTML/CSS/JavaScript。",
+                          "titleCN":  "设计技术",
+                          "title":  "Design Tech",
+                          "num":  "04"
+                      }
+                  ]
 }
