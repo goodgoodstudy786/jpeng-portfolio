@@ -77,6 +77,22 @@ app.use(function(req, res, next) {
 
 // ── Frontend dist ──
 const distPath = path.join(__dirname, "..", "dist")
+
+// ── Serve frontend root with data injection ──
+app.get("/", (req, res) => {
+  const data = getData();
+  const siteData = JSON.stringify({
+    logo: data.site?.logo || "JPENG",
+    logoUrl: data.site?.logoUrl || "",
+    siteTitle: data.site?.siteTitle || "JPENG | 视觉 & AI 设计师",
+    footer: data.site?.footer || ""
+  });
+  let html = fs.readFileSync(path.join(distPath, "index.html"), "utf-8");
+  html = html.replace("<title>", "<script>window.__SITE_DATA__=" + siteData + "</script><title>");
+  html = html.replace(/<title>[^<]*<\/title>/, "<title>" + (data.site?.siteTitle || "JPENG | 视觉 & AI 设计师") + "</title>");
+  res.send(html);
+});
+
 app.use(express.static(distPath))
 
 // ── Upload ──

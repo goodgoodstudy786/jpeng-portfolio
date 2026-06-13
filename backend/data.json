@@ -80,7 +80,8 @@
                     "wechat":  "JPENG_Design",
                     "headline":  "Let us create",
                     "blurb":  "Contact me",
-                    "phone":  "1380000"
+                    "phone":  "1380000",
+                    "qrUrl":  ""
                 },
     "inspirations":  [
                          {
@@ -134,7 +135,10 @@
                      ],
     "site":  {
                  "logo":  "JPENG",
-                 "footer":  "© 2026 JPENG. All rights reserved."
+                 "footer":  "© 2026 JPENG. All rights reserved.",
+                 "siteTitle":  "JPENG | 视觉 \u0026 AI 设计师",
+                 "logoUrl":  "",
+                 "contactBtnText":  "联系我"
              },
     "nav":  [
                 {

@@ -8,7 +8,10 @@ const DB_PATH = path.join(__dirname, "data.json")
 const DEFAULT_DATA = {
   site: {
     logo: "JPENG",
+    logoUrl: "",
+    siteTitle: "JPENG | 视觉 & AI 设计师",
     footer: "© 2026 JPENG. All rights reserved",
+    contactBtnText: "联系我",
   },
   nav: [
     { label: "精选作品", href: "/#projects" },
@@ -48,6 +51,7 @@ const DEFAULT_DATA = {
     phone: "+86 138-0000-0000",
     headline: "Let\u2019s create something great together",
     blurb: "合作 · 交流 · 想法 — 随时找我聊聊",
+    qrUrl: "",
   },
 }
 
@@ -69,3 +73,4 @@ function save(data) {
 }
 
 export default { load, save, DEFAULT_DATA }
+

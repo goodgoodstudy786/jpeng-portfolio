@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
+import { Mail, Phone, MessageCircle } from "lucide-react"
 import { fetchAllData } from "../api"
 import "./Navbar.css"
 
@@ -9,11 +10,18 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [navLinks, setNavLinks] = useState([])
   const [logo, setLogo] = useState("JPENG")
+  const [logoUrl, setLogoUrl] = useState("")
   const location = useLocation()
 
   useEffect(() => {
+    const init = window.__SITE_DATA__
+    if (init) {
+      if (init.logoUrl) setLogoUrl(init.logoUrl)
+      if (init.logo) setLogo(init.logo)
+    }
     fetchAllData().then((d) => {
       if (d.nav) setNavLinks(d.nav)
+      if (d.site?.logoUrl) setLogoUrl(d.site.logoUrl)
       if (d.site?.logo) setLogo(d.site.logo)
     }).catch(() => {})
   }, [])
@@ -97,7 +105,7 @@ export default function Navbar() {
           </div>
           <div className="popup-body">
             <div className="popup-item" onClick={() => handleCopy("jpeng.design@example.com")}>
-              <span className="popup-item-icon">✉</span>
+              <span className="popup-item-icon"><Mail size={18} strokeWidth={1.5} /></span>
               <div className="popup-item-info">
                 <span className="popup-item-label">Email</span>
                 <span className="popup-item-value">jpeng.design@example.com</span>
@@ -105,7 +113,7 @@ export default function Navbar() {
               <span className="popup-item-copy">复制</span>
             </div>
             <div className="popup-item" onClick={() => handleCopy("+86 138-0000-0000")}>
-              <span className="popup-item-icon">📞</span>
+              <span className="popup-item-icon"><Phone size={18} strokeWidth={1.5} /></span>
               <div className="popup-item-info">
                 <span className="popup-item-label">Phone</span>
                 <span className="popup-item-value">+86 138-0000-0000</span>
@@ -113,7 +121,7 @@ export default function Navbar() {
               <span className="popup-item-copy">复制</span>
             </div>
             <div className="popup-item" onClick={() => handleCopy("JPENG_Design")}>
-              <span className="popup-item-icon">💬</span>
+              <span className="popup-item-icon"><MessageCircle size={18} strokeWidth={1.5} /></span>
               <div className="popup-item-info">
                 <span className="popup-item-label">WeChat</span>
                 <span className="popup-item-value">JPENG_Design</span>
@@ -137,3 +145,5 @@ export default function Navbar() {
     </nav>
   )
 }
+
+
