@@ -1,259 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JPENG CMS</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0a0a0a;color:#f5f5f5;display:flex;min-height:100vh}
-.sidebar{width:220px;background:#111;padding:30px 0;border-right:1px solid rgba(255,255,255,0.06);flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
-.sidebar h2{font-size:1.1rem;padding:0 24px 24px;color:#C0FE27;letter-spacing:2px;font-weight:700}
-.sidebar a{display:block;padding:12px 24px;color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;transition:all 0.2s;border-left:2px solid transparent}
-.sidebar a:hover,.sidebar a.active{color:#fff;background:rgba(192,254,39,0.06);border-left-color:#C0FE27}
-.main{flex:1;padding:30px 40px;overflow-y:auto;max-width:1200px}
-.main h1{font-size:1.5rem;margin-bottom:30px;color:#C0FE27;letter-spacing:1px}
-.form-group{margin-bottom:20px}
-.form-group label{display:block;font-size:0.78rem;color:rgba(255,255,255,0.5);margin-bottom:6px;letter-spacing:0.5px;text-transform:uppercase}
-input,textarea,select{width:100%;padding:10px 14px;background:#181818;border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#f5f5f5;font-size:0.9rem;transition:border-color 0.2s;font-family:inherit}
-input:focus,textarea:focus{outline:none;border-color:#C0FE27}
-textarea{min-height:80px;resize:vertical}
-.row{display:grid;grid-template-columns:1fr;gap:20px}
-@media(min-width:600px){.row{grid-template-columns:1fr 1fr}}
-.btn{padding:10px 24px;background:#C0FE27;color:#000;border:none;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn:hover{background:#9ddb10;transform:translateY(-1px)}
-.btn-sm{padding:6px 14px;font-size:0.78rem}
-.btn-danger{background:#ff4757;color:#fff}
-.btn-danger:hover{background:#e04050}
-.btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7)}
-.btn-outline:hover{border-color:#C0FE27;color:#C0FE27;background:rgba(192,254,39,0.06)}
-.card-list{display:flex;flex-direction:column;gap:12px}
-.card-item{background:#181818;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
-.card-item .info{flex:1}
-.card-item .info h4{font-size:0.95rem;margin-bottom:4px}
-.card-item .info p{font-size:0.78rem;color:rgba(255,255,255,0.4)}
-.card-item .actions{display:flex;gap:8px}
-.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center;z-index:1000}
-.modal.open{display:flex}
-.modal-content{background:#181818;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:30px;width:95%;max-width:900px;max-height:85vh;overflow-y:auto}
-.modal-content h3{margin-bottom:20px;color:#C0FE27}
-.modal-actions{display:flex;gap:12px;margin-top:20px;justify-content:flex-end}
-.toast{position:fixed;bottom:30px;right:30px;background:#C0FE27;color:#000;padding:12px 24px;border-radius:10px;font-weight:600;font-size:0.85rem;opacity:0;transition:opacity 0.3s;z-index:2000}
-.toast.show{opacity:1}
 
-/* ── Redesigned Login ── */
-.login-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9999;background:#0a0a0a}
-.login-overlay::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(192,254,39,0.08) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(192,254,39,0.05) 0%,transparent 50%);pointer-events:none}
-.login-overlay::after{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(192,254,39,0.03),transparent,rgba(192,254,39,0.03),transparent);animation:loginRotate 20s linear infinite;pointer-events:none}
-@keyframes loginRotate{to{transform:rotate(360deg)}}
-.login-overlay.hidden{display:none}
-.login-box{position:relative;width:92%;max-width:420px;padding:48px 40px 40px;background:linear-gradient(135deg,rgba(20,20,20,0.95),rgba(15,15,15,0.98));border:1px solid rgba(192,254,39,0.1);border-radius:24px;text-align:center;z-index:1;backdrop-filter:blur(20px);box-shadow:0 24px 80px rgba(0,0,0,0.6),0 0 40px rgba(192,254,39,0.03);animation:loginSlideIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards}
-@keyframes loginSlideIn{0%{opacity:0;transform:translateY(30px) scale(0.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
-.login-box::before{content:"";position:absolute;inset:-1px;border-radius:24px;padding:1px;background:linear-gradient(135deg,rgba(192,254,39,0.2),transparent 40%,transparent 60%,rgba(192,254,39,0.1));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:exclude;mask-composite:exclude;pointer-events:none}
-.login-logo{font-family:"Sora",sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:4px;background:linear-gradient(135deg,#C0FE27,#8fcf1a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
-.login-sub{font-size:0.75rem;color:rgba(255,255,255,0.3);letter-spacing:3px;margin-bottom:36px;text-transform:uppercase}
-.login-box .form-group{margin-bottom:20px;text-align:left}
-.login-box label{font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:1.5px;margin-bottom:8px;display:block;text-transform:uppercase}
-.login-input-wrap{position:relative;display:flex;align-items:center}
-.login-input-wrap input{width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:#f5f5f5;font-size:0.9rem;transition:all 0.3s ease;font-family:inherit}
-.login-input-wrap input:focus{border-color:#C0FE27;background:rgba(192,254,39,0.04);box-shadow:0 0 20px rgba(192,254,39,0.06)}
-.login-input-wrap input::placeholder{color:rgba(255,255,255,0.15)}
-.login-pwd-toggle{position:absolute;right:12px;background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:1.1rem;padding:4px;transition:color 0.2s;z-index:2;line-height:1}
-.login-pwd-toggle:hover{color:#C0FE27}
-.login-error{color:#ff4757;font-size:0.78rem;margin-top:10px;display:none;text-align:center}
-.login-error.show{display:block}
-.login-box .btn{width:100%;padding:14px;margin-top:8px;font-size:0.9rem;font-weight:600;border-radius:12px;background:linear-gradient(135deg,#C0FE27,#9ddb10);color:#000;border:none;cursor:pointer;transition:all 0.3s ease;letter-spacing:1px}
-.login-box .btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(192,254,39,0.25)}
-.login-box .btn:active{transform:translateY(0)}
-.login-footer-text{font-size:0.65rem;color:rgba(255,255,255,0.15);margin-top:24px;letter-spacing:1px}
-.login-grid-bg{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
-.login-grid-bg::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(192,254,39,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(192,254,39,0.02) 1px,transparent 1px);background-size:40px 40px}
-</style>
-<!-- Quill Rich Text Editor -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-<script>
-// 钬测攲钬测攲 Quill Editor initialization 钬测攲钬测攲
-var QUILL_TOOLBAR = [
-  [{ font: [] }, { size: ["small", false, "large", "huge"] }],
-  ["bold", "italic", "underline", "strike"],
-  [{ color: [] }, { background: [] }],
-  [{ header: [1, 2, 3, false] }],
-  [{ align: [] }],
-  [{ list: "ordered" }, { list: "bullet" }],
-  ["blockquote", "code-block"],
-  ["link", "image"],
-  [{ script: "sub" }, { script: "super" }],
-  [{ indent: "-1" }, { indent: "+1" }],
-  [{ direction: "rtl" }],
-  ["clean"]
-];
-
-function initProjectQuill(html) {
-  if (window.projectQuill) { window.projectQuill = null; }
-  var el = document.getElementById("quill-editor-project");
-  if (!el) return;
-  window.projectQuill = new Quill(el, {
-    theme: "snow",
-    modules: { toolbar: QUILL_TOOLBAR },
-    placeholder: "璇疯緭鍏ユ鏂囧唴瀹�..."
-  });
-  if (html) { window.projectQuill.root.innerHTML = html; }
-  updateWordCount(window.projectQuill, "project-word-count");
-  window.projectQuill.on("text-change", function() {
-    updateWordCount(window.projectQuill, "project-word-count");
-  });
-}
-
-function initInspirationQuill(html) {
-  if (window.inspirationQuill) { window.inspirationQuill = null; }
-  var el = document.getElementById("quill-editor-inspiration");
-  if (!el) return;
-  window.inspirationQuill = new Quill(el, {
-    theme: "snow",
-    modules: { toolbar: QUILL_TOOLBAR },
-    placeholder: "璇疯緭鍏ユ鏂囧唴瀹�..."
-  });
-  if (html) { window.inspirationQuill.root.innerHTML = html; }
-  updateWordCount(window.inspirationQuill, "inspiration-word-count");
-  window.inspirationQuill.on("text-change", function() {
-    updateWordCount(window.inspirationQuill, "inspiration-word-count");
-  });
-}
-
-function destroyProjectQuill() {
-  window.projectQuill = null;
-}
-
-function destroyInspirationQuill() {
-  window.inspirationQuill = null;
-}
-
-function updateWordCount(quill, elId) {
-  if (!quill) return;
-  var text = quill.getText().trim();
-  var count = text.length;
-  var el = document.getElementById(elId);
-  if (el) el.textContent = "瀛楁暟: " + count;
-}
-</script>
-
-
-<style>
-.ql-snow .ql-toolbar {
-  background: #1e1e1e;
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 8px 8px 0 0;
-  font-family: inherit;
-  flex-wrap: wrap;
-}
-.ql-snow .ql-toolbar button .ql-stroke { stroke: rgba(255,255,255,0.6); }
-.ql-snow .ql-toolbar button .ql-fill { fill: rgba(255,255,255,0.6); }
-.ql-snow .ql-toolbar button:hover .ql-stroke,
-.ql-snow .ql-toolbar button.ql-active .ql-stroke { stroke: #C0FE27; }
-.ql-snow .ql-toolbar button:hover .ql-fill,
-.ql-snow .ql-toolbar button.ql-active .ql-fill { fill: #C0FE27; }
-.ql-snow .ql-toolbar button:hover,
-.ql-snow .ql-toolbar button.ql-active { color: #C0FE27; }
-.ql-snow .ql-picker { color: rgba(255,255,255,0.6); }
-.ql-snow .ql-picker-options { background: #1e1e1e; border: 1px solid rgba(255,255,255,0.1); }
-.ql-snow .ql-picker-label:hover { color: #C0FE27; }
-.ql-snow .ql-picker-label .ql-stroke { stroke: rgba(255,255,255,0.6); }
-.ql-snow .ql-editor {
-  background: #0a0a0a;
-  color: #e0e0e0;
-  min-height: 250px;
-  font-size: 14px;
-  line-height: 1.7;
-}
-.ql-snow .ql-editor.ql-blank::before { color: rgba(255,255,255,0.25); }
-.ql-container {
-  border: 1px solid rgba(255,255,255,0.12);
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  font-family: inherit;
-}
-.ql-snow .ql-editor h1 { font-size: 1.6em; color: #fff; }
-.ql-snow .ql-editor h2 { font-size: 1.3em; color: #fff; }
-.ql-snow .ql-editor h3 { font-size: 1.1em; color: #fff; }
-.ql-snow .ql-editor p { color: #e0e0e0; }
-.ql-snow .ql-editor strong { color: #fff; }
-.ql-snow .ql-editor a { color: #C0FE27; }
-.ql-snow .ql-editor blockquote {
-  border-left: 3px solid #C0FE27;
-  color: rgba(255,255,255,0.6);
-  padding-left: 12px;
-}
-.ql-snow .ql-editor ul li, .ql-snow .ql-editor ol li { color: #e0e0e0; }
-.ql-editor img { max-width: 100%; border-radius: 4px; }
-.ql-snow .ql-editor table td {
-  border: 1px solid rgba(255,255,255,0.15);
-  padding: 6px 10px;
-}
-.ql-snow .ql-editor table {
-  width: 100%; border-collapse: collapse; margin: 12px 0;
-}
-.quill-word-count {
-  text-align: right;
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.35);
-  padding: 4px 8px 0;
-}
-.ql-toolbar .ql-formats { margin-right: 6px; }
-
-/* 閳?鈻撅箠 Responsive / Mobile 閳?鈻撅箠 */
-@media(max-width:768px){
-  body{flex-direction:column}
-  .sidebar{width:100%;height:auto;position:relative;padding:16px 0;display:flex;flex-wrap:wrap;align-items:center}
-  .sidebar h2{width:auto;padding:0 16px;font-size:1rem}
-  .sidebar a{width:auto;padding:10px 14px;font-size:0.8rem;border-left:none;border-bottom:2px solid transparent}
-  .sidebar a:hover,.sidebar a.active{border-left-color:transparent;border-bottom-color:#C0FE27}
-  .main{padding:20px 16px;max-width:100%}
-  .main h1{font-size:1.2rem;margin-bottom:20px}
-  .login-box{width:92%;padding:36px 20px 28px}
-  .modal-content{padding:20px 16px;width:98%;max-height:90vh}
-  .card-item{flex-direction:column;align-items:flex-start;gap:12px;padding:14px 16px}
-  .card-item .actions{align-self:flex-end}
-  .toast{bottom:16px;right:16px;left:16px;text-align:center}
-  .ql-snow .ql-toolbar{flex-wrap:wrap;padding:4px}
-  .ql-snow .ql-toolbar .ql-formats{margin-right:4px}
-  .ql-editor{min-height:180px !important;font-size:13px}
-}
-@media(max-width:480px){
-  .sidebar h2{font-size:0.9rem}
-  .sidebar a{padding:8px 10px;font-size:0.75rem}
-  .main{padding:16px 12px}
-  .login-box{padding:28px 16px 24px}
-  .login-logo{font-size:1.6rem}
-  .modal-content{padding:16px 12px}
-  .row{gap:12px}
-}</style>
-</head>
-<body>
-<div class="login-overlay" id="loginOverlay">
-<div class="login-grid-bg"></div>
-<div class="login-box">
-<div class="login-logo">JPENG</div>
-<div class="login-sub">Content Management System</div>
-<div class="form-group"><label>Username</label><div class="login-input-wrap"><input id="login-user" placeholder="Enter your username" autocomplete="username" /></div></div>
-<div class="form-group"><label>Password</label><div class="login-input-wrap"><input id="login-pass" type="password" placeholder="Enter your password" autocomplete="current-password" /><button class="login-pwd-toggle" id="pwdToggle" type="button">&#x1f441;</button></div></div>
-<div class="login-error" id="loginError">Invalid credentials</div>
-<button class="btn" id="loginBtn">Sign In</button>
-<div class="login-footer-text">JPENG &middot; Portfolio CMS</div>
-</div></div>
-<nav class="sidebar"><h2>JPENG &middot; CMS</h2>
-<a href="#" class="active" data-section="site">网站设置</a>
-<a href="#" data-section="nav">导航菜单</a>
-<a href="#" data-section="hero">Banner 设置</a>
-<a href="#" data-section="projects">精选作品</a>
-<a href="#" data-section="strengths">个人优势</a>
-<a href="#" data-section="inspirations">灵感收藏</a>
-<a href="#" data-section="contact">联系方式</a>
-</nav>
-<div class="main" id="app"><h1 id="section-title">网站设置</h1><div id="content"></div></div>
-<div class="modal" id="modal"><div class="modal-content" id="modal-content"></div></div>
-<div class="toast" id="toast">保存成功</div>
-<script>
 const API = "";
 let data = {};
 let token = localStorage.getItem("jpeng-cms-token") || "";
@@ -322,7 +67,7 @@ async function fetchAPI(url, o) {
 async function loadData() { data = await fetchAPI("/api/data"); }
 
 function openModal(h) { document.getElementById("modal-content").innerHTML = h; document.getElementById("modal").classList.add("open"); }
-function closeModal() { destroyProjectQuill(); destroyInspirationQuill(); document.getElementById("modal").classList.remove("open"); }
+function closeModal() { document.getElementById("modal").classList.remove("open"); }
 document.getElementById("modal").addEventListener("click", function(e) { if (e.target === e.currentTarget) closeModal(); });
 
 var sections = { site: renderSite, nav: renderNav, hero: renderHero, projects: renderProjects, strengths: renderStrengths, inspirations: renderInspirations, contact: renderContact };
@@ -356,11 +101,33 @@ function renderSite() {
     xhr.send(fd);
   });
 }
+  var logoImg = data.site.logoUrl ? '<img src="' + data.site.logoUrl + '" style="max-width:120px;max-height:40px;display:block;margin-top:8px" />' : "";
+  document.getElementById("content").innerHTML =
+    '<div class="row"><div class="form-group"><label>网站标题（浏览器标签页）</label><input id="site-title" value="' + esc(data.site.siteTitle) + '" /></div><div class="form-group"><label>底部版权文字</label><input id="site-footer" value="' + esc(data.site.footer) + '" /></div></div>' +
+    '<div class="form-group"><label>Logo 文字（如果没上传图片则显示文字）</label><input id="site-logo" value="' + esc(data.site.logo) + '" /></div>' +
+    '<div class="form-group"><label>Logo 图片（推荐: 200x60px, PNG/SVG/WebP, 透明背景）</label><input type="file" id="logo-upload" accept="image/png,image/svg+xml,image/webp,image/jpeg" style="padding:8px;background:#181818;border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#f5f5f5;width:100%" />' + logoImg + '</div>' +
+    '<button class="btn" onclick="saveSite()">保存设置</button><button class="btn btn-danger" style="margin-left:10px" onclick="doLogout()">退出登录</button>';
+  document.getElementById("logo-upload").addEventListener("change", function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var fd = new FormData(); fd.append("file", file);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/upload");
+    xhr.setRequestHeader("Authorization", "Bearer " + token);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var resp = JSON.parse(xhr.responseText);
+        data.site.logoUrl = resp.url;
+        toast("Logo 已上传");
+      } else { toast("上传失败"); }
+    };
+    xhr.send(fd);
+  });
+}
 async function saveSite() {
   var body = {
     logo: document.getElementById("site-logo").value,
     siteTitle: document.getElementById("site-title").value,
-    contactBtnText: document.getElementById("site-contact-btn").value,
     footer: document.getElementById("site-footer").value,
     logoUrl: data.site.logoUrl || ""
   };
@@ -403,26 +170,22 @@ function renderProjects() {
 function editProject(id) {
   var p = data.projects.find(function(x) { return x.id === id; });
   if (!p) return;
-  var html = p.sections && p.sections.length > 0 ? (p.sections[0].content || "") : "";
-  document.getElementById("modal-content").innerHTML =
+  openModal(
     '<h3>编辑作品</h3>' +
     '<div class="row"><div class="form-group"><label>标题</label><input id="ep-title" value="' + esc(p.title) + '" /></div><div class="form-group"><label>英文副标题</label><input id="ep-subtitle" value="' + esc(p.subtitle || "") + '" /></div></div>' +
     '<div class="row"><div class="form-group"><label>年份</label><input id="ep-year" value="' + esc(p.year || "") + '" /></div><div class="form-group"><label>角色</label><input id="ep-role" value="' + esc(p.role || "") + '" /></div></div>' +
     '<div class="form-group"><label>标签（逗号分隔）</label><input id="ep-tags" value="' + esc((p.tags || []).join(", ")) + '" /></div>' +
     '<div class="form-group"><label>概述</label><textarea id="ep-overview">' + esc(p.overview || "") + '</textarea></div>' +
-    '<div class="form-group"><label>正文内容（富文本编辑器）</label><div id="quill-editor-project" style="min-height:250px"></div><div class="quill-word-count" id="project-word-count">字数: 0</div></div>' +
-    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn" onclick="saveProject(\'' + id + '\')">保存</button></div>';
-  document.getElementById("modal").classList.add("open");
-  initProjectQuill(html);
-  setTimeout(function() { document.getElementById("modal-content").scrollTop = 0; }, 50);
+    '<div class="form-group"><label>章节（JSON格式）</label><textarea id="ep-sections" style="min-height:100px">' + esc(JSON.stringify(p.sections || [], null, 2)) + '</textarea></div>' +
+    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn" onclick="saveProject(\'' + id + '\')">保存</button></div>'
+  );
 }
 
 async function saveProject(id) {
-  try {
   var idx = data.projects.findIndex(function(x) { return x.id === id; });
   if (idx === -1) return;
-  var quillContent = "";
-  if (window.projectQuill) { quillContent = window.projectQuill.root.innerHTML; }
+  var sections = [];
+  try { sections = JSON.parse(document.getElementById("ep-sections").value); } catch(e) {}
   data.projects[idx] = {
     ...data.projects[idx],
     title: document.getElementById("ep-title").value,
@@ -431,17 +194,12 @@ async function saveProject(id) {
     role: document.getElementById("ep-role").value,
     tags: document.getElementById("ep-tags").value.split(",").map(function(t) { return t.trim(); }).filter(function(t) { return t; }),
     overview: document.getElementById("ep-overview").value,
-    sections: [{ heading: "内容", content: quillContent }],
+    sections: sections,
   };
   await fetchAPI("/api/projects/" + id, { method: "PUT", body: JSON.stringify(data.projects[idx]) });
-  destroyProjectQuill();
   closeModal();
   renderProjects();
   toast("已更新");
-} catch(e) {
-  console.error("保存失败:", e);
-  toast("保存失败");
-}
 }
 
 async function deleteProject(id) {
@@ -526,40 +284,30 @@ function renderInspirations() {
 function editInspiration(id) {
   var item = data.inspirations.find(function(x) { return x.id === id; });
   if (!item) return;
-  document.getElementById("modal-content").innerHTML =
+  openModal(
     '<h3>编辑灵感</h3>' +
     '<div class="row"><div class="form-group"><label>标题</label><input id="ei-title" value="' + esc(item.title) + '" /></div><div class="form-group"><label>英文副标题</label><input id="ei-subtitle" value="' + esc(item.subtitle || "") + '" /></div></div>' +
     '<div class="row"><div class="form-group"><label>分类</label><input id="ei-category" value="' + esc(item.category) + '" /></div><div class="form-group"><label>来源链接</label><input id="ei-link" value="' + esc(item.link || "") + '" /></div></div>' +
-    '<div class="form-group"><label>正文内容（富文本编辑器）</label><div id="quill-editor-inspiration" style="min-height:250px"></div><div class="quill-word-count" id="inspiration-word-count">字数: 0</div></div>' +
-    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn" onclick="saveInspiration(\'' + id + '\')">保存</button></div>';
-  document.getElementById("modal").classList.add("open");
-  initInspirationQuill(item.content || "");
-  setTimeout(function() { document.getElementById("modal-content").scrollTop = 0; }, 50);
+    '<div class="form-group"><label>正文内容</label><textarea id="ei-content" style="min-height:150px">' + esc(item.content || "") + '</textarea></div>' +
+    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">取消</button><button class="btn" onclick="saveInspiration(\'' + id + '\')">保存</button></div>'
+  );
 }
 
 async function saveInspiration(id) {
-  try {
   var idx = data.inspirations.findIndex(function(x) { return x.id === id; });
   if (idx === -1) return;
-  var quillContent = "";
-  if (window.inspirationQuill) { quillContent = window.inspirationQuill.root.innerHTML; }
   data.inspirations[idx] = {
     ...data.inspirations[idx],
     title: document.getElementById("ei-title").value,
     subtitle: document.getElementById("ei-subtitle").value,
     category: document.getElementById("ei-category").value,
     link: document.getElementById("ei-link").value,
-    content: quillContent,
+    content: document.getElementById("ei-content").value,
   };
   await fetchAPI("/api/inspirations/" + id, { method: "PUT", body: JSON.stringify(data.inspirations[idx]) });
-  destroyInspirationQuill();
   closeModal();
   renderInspirations();
   toast("已更新");
-} catch(e) {
-  console.error("保存失败:", e);
-  toast("保存失败");
-}
 }
 
 async function deleteInspiration(id) {
@@ -604,21 +352,7 @@ function renderContact() {
     xhr.onerror = function() { toast("上传失败"); };
     xhr.send(fd);
   });
-}
-async function saveContact() {
-  await fetchAPI("/api/contact", {
-    method: "PUT",
-    body: JSON.stringify({
-      email: document.getElementById("c-email").value,
-      wechat: document.getElementById("c-wechat").value,
-      phone: document.getElementById("c-phone").value,
-      headline: document.getElementById("c-headline").value,
-      blurb: document.getElementById("c-blurb").value,
-      qrUrl: data.contact.qrUrl || ""
-    })
-  });
-  toast("联系方式已更新");
-}
+}function saveContact() { await fetchAPI("/api/contact", { method: "PUT", body: JSON.stringify({ email: document.getElementById("c-email").value, wechat: document.getElementById("c-wechat").value, phone: document.getElementById("c-phone").value, headline: document.getElementById("c-headline").value, blurb: document.getElementById("c-blurb").value }) }); toast("联系方式已更新"); }
 
 // 鈹€鈹€ Sidebar nav 鈹€鈹€
 document.querySelectorAll(".sidebar a").forEach(function(a) {
@@ -630,11 +364,3 @@ document.querySelectorAll(".sidebar a").forEach(function(a) {
     if (sections[s]) sections[s]();
   });
 });
-</script>
-</body>
-</html>
-
-
-
-
-

@@ -71,8 +71,8 @@ export default function Hero() {
         grad.addColorStop(0.5, `rgba(192,254,39,${a * 0.2})`)
         grad.addColorStop(1, "rgba(192,254,39,0)")
         ctx.beginPath(); ctx.arc(cell.x, cell.y, gs, 0, Math.PI * 2); ctx.fillStyle = grad; ctx.fill()
-        for (let d2 = -CELL; d2 <= CELL; d2 += CELL) { const nx = cell.x + d2; if (nx < 0 || nx > w) continue; const ta = a * Math.max(0, 1 - Math.abs(d2) / CELL); if (ta < 0.01) continue; ctx.beginPath(); ctx.moveTo(cell.x, cell.y); ctx.lineTo(nx, cell.y); ctx.strokeStyle = `rgba(192,254,39,${ta * 0.25})`; ctx.lineWidth = 1; ctx.stroke() }
-        for (let d2 = -CELL * 0.86; d2 <= CELL * 0.86; d2 += CELL * 0.86) { const ny = cell.y + d2; if (ny < 0 || ny > h) continue; const ta = a * Math.max(0, 1 - Math.abs(d2) / (CELL * 0.86)); if (ta < 0.01) continue; ctx.beginPath(); ctx.moveTo(cell.x, cell.y); ctx.lineTo(cell.x, ny); ctx.strokeStyle = `rgba(192,254,39,${ta * 0.2})`; ctx.lineWidth = 1; ctx.stroke() }
+        for (let d2 = -CELL; d2 <= CELL; d2 += CELL) { const nx = cell.x + d2; if (nx < 0 || nx > w) continue; const ta = a * Math.max(0, 1 - Math.abs(d2) / CELL); if (ta < 0.01) continue; ctx.beginPath(); ctx.moveTo(cell.x, cell.y); ctx.lineTo(nx, cell.y); ctx.strokeStyle = `rgba(192,254,39,${ta * 0.85})`; ctx.lineWidth = 1; ctx.stroke() }
+        for (let d2 = -CELL * 0.86; d2 <= CELL * 0.86; d2 += CELL * 0.86) { const ny = cell.y + d2; if (ny < 0 || ny > h) continue; const ta = a * Math.max(0, 1 - Math.abs(d2) / (CELL * 0.86)); if (ta < 0.01) continue; ctx.beginPath(); ctx.moveTo(cell.x, cell.y); ctx.lineTo(cell.x, ny); ctx.strokeStyle = `rgba(192,254,39,${ta * 0.75})`; ctx.lineWidth = 1; ctx.stroke() }
         ctx.beginPath(); ctx.arc(cell.x, cell.y, a * 2 + 1, 0, Math.PI * 2); ctx.fillStyle = `rgba(192,254,39,${a})`; ctx.fill()
       })
       animId = requestAnimationFrame(draw)

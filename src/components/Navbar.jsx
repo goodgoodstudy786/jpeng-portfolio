@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Mail, Phone, MessageCircle } from "lucide-react"
 import { fetchAllData } from "../api"
@@ -11,6 +11,10 @@ export default function Navbar() {
   const [navLinks, setNavLinks] = useState([])
   const [logo, setLogo] = useState("JPENG")
   const [logoUrl, setLogoUrl] = useState("")
+  const [contactData, setContactData] = useState({ email: "", wechat: "", phone: "", qrUrl: "", headline: "联系方式" })
+  const [btnText, setBtnText] = useState("联系我")
+  const [toast, setToast] = useState(null)
+  const toastTimer = useRef(null)
   const location = useLocation()
 
   useEffect(() => {
@@ -23,6 +27,8 @@ export default function Navbar() {
       if (d.nav) setNavLinks(d.nav)
       if (d.site?.logoUrl) setLogoUrl(d.site.logoUrl)
       if (d.site?.logo) setLogo(d.site.logo)
+      if (d.site?.contactBtnText) setBtnText(d.site.contactBtnText)
+      if (d.contact) setContactData(d.contact)
     }).catch(() => {})
   }, [])
 
@@ -62,16 +68,27 @@ export default function Navbar() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
   }
 
+  const showToastMsg = useCallback((msg) => {
+    setToast(msg)
+    if (toastTimer.current) clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => setToast(null), 2000)
+  }, [])
+
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text)
-    alert(`已复制 ${text}`)
+    showToastMsg("已复制")
   }
 
   return (
+    <>
     <nav className={`navbar ${scrolled ? "scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}>
       <Link to="/" className="logo" onClick={() => setMenuOpen(false)}>
         <span className="logo-glow" />
-        <span className="logo-text">{logo}</span>
+        {logoUrl ? (
+          <img src={logoUrl} alt={logo} className="logo-img" />
+        ) : (
+          <span className="logo-text">{logo}</span>
+        )}
       </Link>
 
       <div className={`nav-center ${menuOpen ? "open" : ""}`}>
@@ -82,14 +99,14 @@ export default function Navbar() {
         ))}
         <button className="nav-contact-btn mobile-contact" onClick={() => { setShowPopup(!showPopup); setMenuOpen(false) }}>
           <span className="nav-contact-icon">✦</span>
-          <span className="nav-contact-text">联系我</span>
+          <span className="nav-contact-text">{btnText}</span>
         </button>
       </div>
 
       <div className="nav-right">
         <button className="nav-contact-btn desktop-contact" onClick={() => setShowPopup(!showPopup)}>
           <span className="nav-contact-icon">✦</span>
-          <span className="nav-contact-text">联系我</span>
+          <span className="nav-contact-text">{btnText}</span>
         </button>
         <button className={`hamburger ${menuOpen ? "open" : ""}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
           <span /><span /><span />
@@ -100,50 +117,42 @@ export default function Navbar() {
         <div className="contact-popup">
           <div className="popup-arrow" />
           <div className="popup-header">
-            <span className="popup-title">联系方式</span>
+            <span className="popup-title">{contactData.headline || "联系方式"}</span>
             <span className="popup-eng">Contact</span>
           </div>
           <div className="popup-body">
-            <div className="popup-item" onClick={() => handleCopy("jpeng.design@example.com")}>
+            <div className="popup-item" onClick={() => handleCopy(contactData.email)}>
               <span className="popup-item-icon"><Mail size={18} strokeWidth={1.5} /></span>
               <div className="popup-item-info">
                 <span className="popup-item-label">Email</span>
-                <span className="popup-item-value">jpeng.design@example.com</span>
+                <span className="popup-item-value">{contactData.email}</span>
               </div>
-              <span className="popup-item-copy">复制</span>
             </div>
-            <div className="popup-item" onClick={() => handleCopy("+86 138-0000-0000")}>
+            <div className="popup-item" onClick={() => handleCopy(contactData.phone)}>
               <span className="popup-item-icon"><Phone size={18} strokeWidth={1.5} /></span>
               <div className="popup-item-info">
                 <span className="popup-item-label">Phone</span>
-                <span className="popup-item-value">+86 138-0000-0000</span>
+                <span className="popup-item-value">{contactData.phone}</span>
               </div>
-              <span className="popup-item-copy">复制</span>
             </div>
-            <div className="popup-item" onClick={() => handleCopy("JPENG_Design")}>
+            <div className="popup-item" onClick={() => handleCopy(contactData.wechat)}>
               <span className="popup-item-icon"><MessageCircle size={18} strokeWidth={1.5} /></span>
               <div className="popup-item-info">
                 <span className="popup-item-label">WeChat</span>
-                <span className="popup-item-value">JPENG_Design</span>
+                <span className="popup-item-value">{contactData.wechat}</span>
               </div>
-              <span className="popup-item-copy">复制</span>
             </div>
-            <div className="popup-qr">
-              <div className="popup-qr-visual">
-                <div className="popup-qr-grid">
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <div key={i} className={`pq-cell ${[0,2,4,6,8].includes(i) ? "on" : ""}`} />
-                  ))}
-                </div>
-                <div className="popup-qr-text">JPENG</div>
+            {contactData.qrUrl && (
+              <div className="popup-qr">
+                <img src={contactData.qrUrl} alt="QR Code" className="popup-qr-img" />
+                <span className="popup-qr-label">微信扫码</span>
               </div>
-              <span className="popup-qr-label">微信扫码</span>
-            </div>
+            )}
           </div>
         </div>
       )}
     </nav>
+    {toast && <div className="nav-toast">{toast}</div>}
+    </>
   )
 }
-
-
