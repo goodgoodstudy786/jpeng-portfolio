@@ -378,8 +378,7 @@ async function loadData() { data = await fetchAPI("/api/data"); }
 
 function openModal(h) { document.getElementById("modal-content").innerHTML = h; document.getElementById("modal").classList.add("open"); }
 function closeModal() { destroyProjectQuill(); destroyInspirationQuill(); document.getElementById("modal").classList.remove("open"); }
-document.getElementById("modal").addEventListener("click", function(e) { /* 点击遮罩不关闭，需点取消按钮 */ });
-document.getElementById("modal-content").addEventListener("click", function(e) { e.stopPropagation(); });
+// 弹窗只能通过取消/保存按钮关闭，点击遮罩不关闭
 
 function toggleSidebar() { document.getElementById("sidebarNav").classList.toggle("open"); document.getElementById("sidebarOverlay").classList.toggle("show"); }
 document.addEventListener("DOMContentLoaded", function() {
