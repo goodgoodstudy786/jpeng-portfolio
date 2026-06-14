@@ -21,11 +21,17 @@ const ADMIN_PATH = process.env.ADMIN_PATH || "/jpeng-cms"
 const TOKEN_SECRET = crypto.randomBytes(32).toString("hex")
 
 // Cloudinary configuration
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "your_cloud_name",
-  api_key: process.env.CLOUDINARY_API_KEY || "your_api_key",
-  api_secret: process.env.CLOUDINARY_API_SECRET || "your_api_secret",
-})
+if (process.env.CLOUDINARY_URL) {
+  cloudinary.config({
+    url: process.env.CLOUDINARY_URL
+  })
+} else {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  })
+}
 
 app.use(cors())
 app.use(express.json({ limit: "50mb" }))
