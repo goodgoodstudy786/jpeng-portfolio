@@ -314,7 +314,7 @@
 .detail-content-html h1,
 .detail-content-html h2,
 .detail-content-html h3 {
-  color: var(--text-primary, #f5f5f5);
+  color: var(--text);
   margin: 32px 0 16px;
   font-weight: 600;
 }
@@ -324,7 +324,7 @@
 .detail-content-html h3 { font-size: 1.15em; }
 
 .detail-content-html strong {
-  color: var(--text-primary, #f5f5f5);
+  color: var(--text);
   font-weight: 600;
 }
 
