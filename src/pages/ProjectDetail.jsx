@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import Loading from "../components/Loading"
 import Contact from "../components/Contact"
@@ -10,31 +10,38 @@ import "./DetailPage.css"
 
 export default function ProjectDetail() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [project, setProject] = useState(null)
   const [projects, setProjects] = useState([])
 
   useEffect(() => {
+    let cancelled = false
     setLoading(true)
     setProject(null)
-    fetchAllData().then((d) => {
-      if (d.projects) setProjects(d.projects)
-      const found = d.projects?.find((p) => p.id === id)
-      if (found) setProject(found)
-    }).catch(() => {}).finally(() => {
-      setLoading(false)
-    })
+
+    fetchAllData()
+      .then((d) => {
+        if (cancelled) return
+        if (d.projects) setProjects(d.projects)
+        const found = d.projects?.find((p) => p.id === id)
+        if (found) setProject(found)
+      })
+      .catch((err) => {
+        console.error("Failed to load project:", err)
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+
+    return () => { cancelled = true }
   }, [id])
 
   const currentIdx = projects.findIndex((p) => p.id === id)
-  const prevId = currentIdx > 0 ? projects[currentIdx - 1]?.id : null
-  const nextId = currentIdx < projects.length - 1 ? projects[currentIdx + 1]?.id : null
-  const prevTitle = prevId ? projects[currentIdx - 1]?.title : null
-  const nextTitle = nextId ? projects[currentIdx + 1]?.title : null
+  const prevProject = currentIdx > 0 ? projects[currentIdx - 1] : null
+  const nextProject = currentIdx < projects.length - 1 ? projects[currentIdx + 1] : null
 
-  if (loading) {
-    return <Loading />
-  }
+  if (loading) return <Loading />
 
   if (!project) {
     return (
@@ -42,9 +49,12 @@ export default function ProjectDetail() {
         <Navbar />
         <div className="container" style={{ paddingTop: "160px", textAlign: "center" }}>
           <h1>项目未找到</h1>
-          <Link to="/" className="back-link" style={{ marginTop: "20px", display: "inline-block" }}>返回首页</Link>
+          <Link to="/" className="back-link" style={{ marginTop: "20px", display: "inline-block" }}>
+            返回首页
+          </Link>
         </div>
-        <BackToTop /><ThemeToggle />
+        <BackToTop />
+        <ThemeToggle />
       </div>
     )
   }
@@ -52,11 +62,19 @@ export default function ProjectDetail() {
   return (
     <div className="detail-page">
       <Navbar />
+
+      {/* Header */}
       <div className="detail-project-header">
         <div className="container">
-          <Link to="/" className="detail-back-link">← 返回全部作品</Link>
+          <Link to="/" className="detail-back-link">
+            ← 返回全部作品
+          </Link>
           <div className="detail-tags">
-            {(project.tags || []).map((t) => <span key={t} className="detail-tag">{t}</span>)}
+            {(project.tags || []).map((t, i) => (
+              <span key={i} className="detail-tag">
+                {t}
+              </span>
+            ))}
           </div>
           <h1 className="detail-title">{project.title}</h1>
           <p className="detail-subtitle">{project.subtitle}</p>
@@ -67,51 +85,75 @@ export default function ProjectDetail() {
           </div>
         </div>
       </div>
+
+      {/* Body */}
       <div className="detail-body container" style={{ paddingTop: "60px" }}>
-        <div className="detail-overview">
-          <h2>项目概述</h2>
-          <p>{project.overview}</p>
-        </div>
+        {/* Overview */}
+        {project.overview && (
+          <div className="detail-overview">
+            <h2>项目概述</h2>
+            <p>{project.overview}</p>
+          </div>
+        )}
+
+        {/* Sections with rich content */}
         {(project.sections || []).map((sec, i) => (
           <div key={i} className="detail-section">
-            <h2>{sec.heading}</h2>
-            <div className="detail-content-html" dangerouslySetInnerHTML={{ __html: sec.content }} />
+            {sec.heading && <h2>{sec.heading}</h2>}
+            {sec.content && (
+              <div
+                className="detail-content-html"
+                dangerouslySetInnerHTML={{ __html: sec.content }}
+              />
+            )}
           </div>
         ))}
       </div>
 
+      {/* Pager */}
       <div className="container">
         <div className="detail-pager">
-          {prevId ? (
-            <Link to={`/project/${prevId}`} className="dp-link dp-prev">
+          {prevProject ? (
+            <Link to={`/project/${prevProject.id}`} className="dp-link dp-prev">
               <span className="dp-arrow">←</span>
               <span className="dp-body">
                 <span className="dp-label">上一篇</span>
-                <span className="dp-title">{prevTitle || ""}</span>
+                <span className="dp-title">{prevProject.title}</span>
               </span>
             </Link>
           ) : (
             <div className="dp-link dp-disabled">
-              <span className="dp-body"><span className="dp-label" style={{color:"var(--text-muted)"}}>已是第一篇</span></span>
+              <span className="dp-body">
+                <span className="dp-label" style={{ color: "var(--text-muted)" }}>
+                  已是第一篇
+                </span>
+              </span>
             </div>
           )}
-          {nextId ? (
-            <Link to={`/project/${nextId}`} className="dp-link dp-next">
-              <span className="dp-body" style={{textAlign:"right"}}>
+
+          {nextProject ? (
+            <Link to={`/project/${nextProject.id}`} className="dp-link dp-next">
+              <span className="dp-body" style={{ textAlign: "right" }}>
                 <span className="dp-label">下一篇</span>
-                <span className="dp-title">{nextTitle || ""}</span>
+                <span className="dp-title">{nextProject.title}</span>
               </span>
               <span className="dp-arrow">→</span>
             </Link>
           ) : (
             <div className="dp-link dp-disabled dp-next">
-              <span className="dp-body" style={{textAlign:"right"}}><span className="dp-label" style={{color:"var(--text-muted)"}}>已是最后一篇</span></span>
+              <span className="dp-body" style={{ textAlign: "right" }}>
+                <span className="dp-label" style={{ color: "var(--text-muted)" }}>
+                  已是最后一篇
+                </span>
+              </span>
             </div>
           )}
         </div>
       </div>
 
-      <Contact /><ThemeToggle /><BackToTop />
+      <Contact />
+      <ThemeToggle />
+      <BackToTop />
     </div>
   )
 }

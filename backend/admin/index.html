@@ -483,52 +483,36 @@ function editProject(id) {
 
 async function saveProject(id) {
   try {
-  var idx = data.projects.findIndex(function(x) { return x.id === id; });
-  if (idx === -1) return;
-  
-  // Get content directly from DOM element BEFORE destroying Quill
-  var editorEl = document.querySelector("#quill-editor-project .ql-editor");
-  var quillContent = "";
-  if (editorEl) {
-    quillContent = editorEl.innerHTML;
-    console.log("Project content from DOM:", quillContent);
-  }
-  
-  // Also try from Quill instance if available
-  if (window.projectQuill && window.projectQuill.root) {
-    var quillHtml = window.projectQuill.root.innerHTML;
-    if (quillHtml.length > quillContent.length) {
-      quillContent = quillHtml;
-      console.log("Project content from Quill:", quillContent);
+    var idx = data.projects.findIndex(function(x) { return x.id === id; });
+    if (idx === -1) return;
+
+    // Get content from Quill instance directly
+    var quillContent = "";
+    if (window.projectQuill && window.projectQuill.root) {
+      quillContent = window.projectQuill.root.innerHTML;
     }
+    console.log("Project content to save:", quillContent.substring(0, 200));
+
+    data.projects[idx] = {
+      ...data.projects[idx],
+      title: document.getElementById("ep-title").value,
+      subtitle: document.getElementById("ep-subtitle").value,
+      year: document.getElementById("ep-year").value,
+      role: document.getElementById("ep-role").value,
+      tags: document.getElementById("ep-tags").value.split(",").map(function(t) { return t.trim(); }).filter(function(t) { return t; }),
+      overview: document.getElementById("ep-overview").value,
+      sections: [{ heading: "内容", content: quillContent }],
+    };
+
+    await fetchAPI("/api/projects/" + id, { method: "PUT", body: JSON.stringify(data.projects[idx]) });
+    destroyProjectQuill();
+    closeModal();
+    renderProjects();
+    toast("已更新");
+  } catch(e) {
+    console.error("保存失败:", e);
+    toast("保存失败");
   }
-  
-  if (!quillContent || quillContent.trim() === "") {
-    console.warn("Warning: No content found in editor!");
-  }
-  
-  data.projects[idx] = {
-    ...data.projects[idx],
-    title: document.getElementById("ep-title").value,
-    subtitle: document.getElementById("ep-subtitle").value,
-    year: document.getElementById("ep-year").value,
-    role: document.getElementById("ep-role").value,
-    tags: document.getElementById("ep-tags").value.split(",").map(function(t) { return t.trim(); }).filter(function(t) { return t; }),
-    overview: document.getElementById("ep-overview").value,
-    sections: [{ heading: "内容", content: quillContent }],
-  };
-  
-  console.log("Saving project:", JSON.stringify(data.projects[idx], null, 2));
-  
-  await fetchAPI("/api/projects/" + id, { method: "PUT", body: JSON.stringify(data.projects[idx]) });
-  destroyProjectQuill();
-  closeModal();
-  renderProjects();
-  toast("已更新");
-} catch(e) {
-  console.error("保存失败:", e);
-  toast("保存失败");
-}
 }
 
 async function deleteProject(id) {
@@ -626,27 +610,34 @@ function editInspiration(id) {
 
 async function saveInspiration(id) {
   try {
-  var idx = data.inspirations.findIndex(function(x) { return x.id === id; });
-  if (idx === -1) return;
-  var quillContent = "";
-  if (window.inspirationQuill) { quillContent = window.inspirationQuill.root.innerHTML; }
-  data.inspirations[idx] = {
-    ...data.inspirations[idx],
-    title: document.getElementById("ei-title").value,
-    subtitle: document.getElementById("ei-subtitle").value,
-    category: document.getElementById("ei-category").value,
-    link: document.getElementById("ei-link").value,
-    content: quillContent,
-  };
-  await fetchAPI("/api/inspirations/" + id, { method: "PUT", body: JSON.stringify(data.inspirations[idx]) });
-  destroyInspirationQuill();
-  closeModal();
-  renderInspirations();
-  toast("已更新");
-} catch(e) {
-  console.error("保存失败:", e);
-  toast("保存失败");
-}
+    var idx = data.inspirations.findIndex(function(x) { return x.id === id; });
+    if (idx === -1) return;
+
+    // Get content from Quill instance directly
+    var quillContent = "";
+    if (window.inspirationQuill && window.inspirationQuill.root) {
+      quillContent = window.inspirationQuill.root.innerHTML;
+    }
+    console.log("Inspiration content to save:", quillContent.substring(0, 200));
+
+    data.inspirations[idx] = {
+      ...data.inspirations[idx],
+      title: document.getElementById("ei-title").value,
+      subtitle: document.getElementById("ei-subtitle").value,
+      category: document.getElementById("ei-category").value,
+      link: document.getElementById("ei-link").value,
+      content: quillContent,
+    };
+
+    await fetchAPI("/api/inspirations/" + id, { method: "PUT", body: JSON.stringify(data.inspirations[idx]) });
+    destroyInspirationQuill();
+    closeModal();
+    renderInspirations();
+    toast("已更新");
+  } catch(e) {
+    console.error("保存失败:", e);
+    toast("保存失败");
+  }
 }
 
 async function deleteInspiration(id) {
