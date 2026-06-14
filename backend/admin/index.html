@@ -485,8 +485,28 @@ async function saveProject(id) {
   try {
   var idx = data.projects.findIndex(function(x) { return x.id === id; });
   if (idx === -1) return;
+  
+  // Get content directly from DOM element BEFORE destroying Quill
+  var editorEl = document.querySelector("#quill-editor-project .ql-editor");
   var quillContent = "";
-  if (window.projectQuill) { quillContent = window.projectQuill.root.innerHTML; }
+  if (editorEl) {
+    quillContent = editorEl.innerHTML;
+    console.log("Project content from DOM:", quillContent);
+  }
+  
+  // Also try from Quill instance if available
+  if (window.projectQuill && window.projectQuill.root) {
+    var quillHtml = window.projectQuill.root.innerHTML;
+    if (quillHtml.length > quillContent.length) {
+      quillContent = quillHtml;
+      console.log("Project content from Quill:", quillContent);
+    }
+  }
+  
+  if (!quillContent || quillContent.trim() === "") {
+    console.warn("Warning: No content found in editor!");
+  }
+  
   data.projects[idx] = {
     ...data.projects[idx],
     title: document.getElementById("ep-title").value,
@@ -497,6 +517,9 @@ async function saveProject(id) {
     overview: document.getElementById("ep-overview").value,
     sections: [{ heading: "内容", content: quillContent }],
   };
+  
+  console.log("Saving project:", JSON.stringify(data.projects[idx], null, 2));
+  
   await fetchAPI("/api/projects/" + id, { method: "PUT", body: JSON.stringify(data.projects[idx]) });
   destroyProjectQuill();
   closeModal();
