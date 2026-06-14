@@ -7,6 +7,8 @@ import crypto from "crypto"
 import { fileURLToPath } from "url"
 import { v4 as uuidv4 } from "uuid"
 import db from "./db.js"
+import { v2 as cloudinary } from "cloudinary"
+import { Readable } from "stream"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const DB_PATH = path.join(__dirname, "data.json")
@@ -17,6 +19,13 @@ const ADMIN_USER = process.env.ADMIN_USER || "jpeng"
 const ADMIN_PASS = process.env.ADMIN_PASS || "jpeng2024"
 const ADMIN_PATH = process.env.ADMIN_PATH || "/jpeng-cms"
 const TOKEN_SECRET = crypto.randomBytes(32).toString("hex")
+
+// Cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "your_cloud_name",
+  api_key: process.env.CLOUDINARY_API_KEY || "your_api_key",
+  api_secret: process.env.CLOUDINARY_API_SECRET || "your_api_secret",
+})
 
 app.use(cors())
 app.use(express.json({ limit: "50mb" }))
@@ -193,16 +202,24 @@ app.put("/api/contact", authMiddleware, (req, res) => {
   res.json({ success: true })
 })
 
-// Upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, path.join(__dirname, "uploads")),
-  filename: (req, file, cb) => cb(null, uuidv4() + path.extname(file.originalname)),
-})
-const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } })
+// Upload to Cloudinary
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } })
 
-app.post("/api/upload", authMiddleware, upload.single("file"), (req, res) => {
+app.post("/api/upload", authMiddleware, upload.single("file"), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: "No file" })
-  res.json({ url: "/uploads/" + req.file.filename })
+  try {
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: "jpeng-portfolio" },
+        (error, result) => error ? reject(error) : resolve(result)
+      )
+      Readable.from(req.file.buffer).pipe(uploadStream)
+    })
+    res.json({ url: result.secure_url })
+  } catch (error) {
+    console.error("Cloudinary upload error:", error)
+    res.status(500).json({ error: "Upload failed" })
+  }
 })
 
 // Reset data

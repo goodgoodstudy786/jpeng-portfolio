@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "npm run build && node -e \"try{const fs=require('fs'),p=require('path').join(__dirname,'backend','data.json');if(fs.existsSync(p)){const j=JSON.parse(fs.readFileSync(p,'utf-8'));if(/[\u3400-\u4dff]/.test(JSON.stringify(j))||JSON.stringify(j).includes('\ufffd')){fs.unlinkSync(p);console.log('Deleted corrupted data.json')}}}catch(e){}\" && node backend/server.js",
+    "start": "npm run build && node -e \"try{const fs=require('fs'),p=require('path').join(__dirname,'backend','data.json');if(fs.existsSync(p)){const j=JSON.parse(fs.readFileSync(p,'utf-8'));if(/[㐀-䷿]/.test(JSON.stringify(j))||JSON.stringify(j).includes('�')){fs.unlinkSync(p);console.log('Deleted corrupted data.json')}}}catch(e){}\" && node backend/server.js",
     "server": "node backend/server.js",
     "preview": "vite preview"
   },
@@ -28,6 +28,7 @@
     "@tiptap/pm": "^3.26.1",
     "@tiptap/react": "^3.26.1",
     "@tiptap/starter-kit": "^3.26.1",
+    "cloudinary": "^2.10.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "lucide-react": "^1.18.0",

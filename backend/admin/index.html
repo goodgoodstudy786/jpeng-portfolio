@@ -87,7 +87,7 @@ var QUILL_TOOLBAR = [
   [{ direction: "rtl" }],
   ["clean"]
 ];
-// ── Custom Quill image handler (Base64) ──
+// ── Custom Quill image upload handler (Cloudinary) ──
 function quillImageHandler(quill) {
   var savedRange = quill.getSelection(true);
   if (!savedRange) savedRange = { index: 0, length: 0 };
@@ -100,17 +100,24 @@ function quillImageHandler(quill) {
   input.onchange = function() {
     var file = input.files[0];
     if (!file) { document.body.removeChild(input); return; }
-    // Convert to Base64
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var base64 = e.target.result;
-      quill.insertEmbed(savedRange.index, "image", base64);
-      quill.setSelection(savedRange.index + 1);
-      toast("图片已插入");
+    var fd = new FormData();
+    fd.append("file", file);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/upload");
+    xhr.setRequestHeader("Authorization", "Bearer " + token);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var url = JSON.parse(xhr.responseText).url;
+        quill.insertEmbed(savedRange.index, "image", url);
+        quill.setSelection(savedRange.index + 1);
+        toast("图片已上传");
+      } else {
+        toast("上传失败");
+      }
       document.body.removeChild(input);
     };
-    reader.onerror = function() { toast("图片读取失败"); document.body.removeChild(input); };
-    reader.readAsDataURL(file);
+    xhr.onerror = function() { toast("上传失败"); document.body.removeChild(input); };
+    xhr.send(fd);
   };
 }
 
